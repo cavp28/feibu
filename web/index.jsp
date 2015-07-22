@@ -117,7 +117,7 @@
                     </div>
                 </div>
                 <div class="modal-body" style="background-color:#ffffff">
-                   <form name="form1" method="POST" action="/parcial2_grupo6/CRUDServlet">
+                   <form id="form1" name="form1" method="POST" action="/parcial2_grupo6/CRUDServlet">
                         <div class="form-group">
                             <input class="form-control" type="text" name="nombres" placeholder="Nombres" required="required">
                         </div>
@@ -176,7 +176,7 @@
                     </form>
                 </div>
                 <div class="modal-footer" style="background-color:#ffffff">
-                    <button type="submit" name="opcion" value="Registrarse"class="btn btn-primary">Registrarse</button>
+                    <button type="submit" form="form1" name="opcion" value="Registrarse"class="btn btn-primary">Registrarse</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                 </div>
             </div>

@@ -115,9 +115,8 @@
                           <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-user"></i></a>
                            <ul class="dropdown-menu">
-                               <li><a href="#">Ver perfil</a></li>
+                              <li><a href="Perfil.jsp">Ver perfil</a></li>
                               <li><a href="editarPerfil.jsp">Editar perfil</a></li>                              
-                              <li><a href="">Imagenes</a></li>
                               <li><a href="">Sugerencias de amigos</a></li>
                               <li><a href="">Configuraciones</a></li>
                               <%if (usuarioActual.getIdpersona().getIdrol().getIdrol()==1){%>
@@ -160,7 +159,7 @@
                         <% 
                             List<Posts> listaPost = null;
                             
-                            listaPost = usuarioActual.getPostsList(); // postsFacade.findAll();
+                            listaPost =postsFacade.findAll(); //usuarioActual.getPostsList(); // 
                             Collections.reverse(listaPost);                             
                             for(Posts p : listaPost){  
                                 String idPost = p.getIdpost().toString();

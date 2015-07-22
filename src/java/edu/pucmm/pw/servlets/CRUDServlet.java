@@ -146,7 +146,6 @@ public class CRUDServlet extends HttpServlet {
                                 System.out.println("ciudad Actual" + idCiudadActual);
                             }
                         }
-
                         Ciudades ciudadActual = ciudadesFacade.find(idCiudadActual);
                         persona.setLugaractual(ciudadActual);
                         persona.setFechacreacion(new Date());
@@ -155,7 +154,9 @@ public class CRUDServlet extends HttpServlet {
                         Usuarios usuario = new Usuarios();
                         usuario.setIdpersona(persona);
                         usuariosFacade.create(usuario);
-                        response.sendRedirect("index.jsp?respuesta=3");
+                        ServletContext sc = request.getSession().getServletContext();
+                        sc.setAttribute("idUsuario", usuario.getIdusuario());
+                        response.sendRedirect("editarPerfil.jsp");
                     } catch (NoSuchAlgorithmException ex) {
                         System.out.println(ex.getMessage());
                         Logger.getLogger(CRUDServlet.class.getName()).log(Level.SEVERE, null, ex);
