@@ -4,6 +4,10 @@
     Author     : david
 --%>
 
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="edu.pucmm.pw.entidades.Usuarios"%>
+<%@page import="edu.pucmm.pw.servicios.UsuariosFacade"%>
+<%@page import="edu.pucmm.pw.servicios.UsuariosFacade"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -16,7 +20,7 @@
     <meta name="description" content="bootstrap social network template">
     <meta name="author" content="">
     <link rel="icon" href="img/logo.png">
-    <title>Dee-Dee | Social network</title>
+    <title>Feibú</title>
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
@@ -30,7 +34,21 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
   </head>
+    <%
+        javax.naming.Context context = new javax.naming.InitialContext();
+        String jndiUrl = "java:comp/env/UsuariosFacade";
+        UsuariosFacade usuariosFacade = (UsuariosFacade) context.lookup(jndiUrl);
+    %>
   <body>
+        <%Usuarios usuarioActual = null;
+        if(application.getAttribute("idUsuario")!=null){
+                 usuarioActual = usuariosFacade.find(application.getAttribute("idUsuario"));
+        }   
+        
+        if(request.getParameter("idUsuario")!=null){
+                usuarioActual = usuariosFacade.find(Integer.parseInt(request.getParameter("idUsuario")));
+        }%> 
+        
     <div id="navbar-full">
       <div id="navbar">
         <nav class="navbar navbar-default navbar-transparent navbar-fixed-top" role="navigation">
@@ -43,9 +61,8 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
-              <a class="navbar-brand" href="#">
-                <img class="app-logo" src="img/logo.png">
-                <b>Dee-Dee</b>
+                <a class="navbar-brand logo" href="home.jsp">
+                f
               </a>
             </div>
 
@@ -63,9 +80,9 @@
               </form>
               <ul class="nav navbar-nav navbar-right navbar-opts">
                 <li class="active"><a href="index-2.html"><i class="fa fa-tasks fa-2x_"></i>Timeline</a></li>
-                <li><a href="about.html"><i class="fa fa-info-circle fa-2x_"></i>About</a></li>
-                <li><a href="friends.html"><i class="fa fa-users fa-2x_"></i>Friends</a></li>
-                <li><a href="photos.html"><i class="fa fa-file-image-o fa-2x_"></i>Photos</a></li>
+                <li><a href="about.html"><i class="fa fa-info-circle fa-2x_"></i>Información</a></li>
+                <li><a href="friends.html"><i class="fa fa-users fa-2x_"></i>Amigos</a></li>
+                <li><a href="photos.html"><i class="fa fa-file-image-o fa-2x_"></i>Imágenes</a></li>
               </ul>
             </div>
           </div>
@@ -96,7 +113,7 @@
     <div class="main">
       <!-- profile image-->
       <img src="img/Profile/profile.jpg" class="profile-photo img-rounded show-in-modal"/>
-      <h4 class="text-center user-name hidden-xs">Marting lowenyert</h4>
+      <h4 class="text-center user-name hidden-xs"><%=usuarioActual.getIdpersona().getNombres()+" " + usuarioActual.getIdpersona().getApellidos() %></h4>
       <!-- gray section -->
       <div class="section-gray">
         <div class="container">
@@ -104,11 +121,7 @@
                 <div class="col-md-12 profile-opts">
                   <button type="button" class="btn btn-info btn-fill pull-right">
                     <i class="fa fa-user-plus"></i>
-                    <span class="hidden-xs">Add Friend</span>
-                  </button>   
-                  <button type="button" class="btn btn-info btn-fill pull-right">
-                    <i class="fa fa-envelope"></i>
-                    <span class="hidden-xs">Send message</span>
+                    <span class="hidden-xs">Agregar a amigos</span>
                   </button>     
                 </div>
             </div>
@@ -126,13 +139,15 @@
                   <div class="panel panel-default panel-user-detail">
                     <div class="panel-body">
                       <ul class="list-unstyled">
-                        <li><i class="fa fa-suitcase"></i>Works at <a href="#">software development</a></li>
-                        <li><i class="fa fa-calendar"></i>Born on August 12, 1991</li>
-                        <li><i class="fa fa-rss"></i>Followed by <a href="#">51 People</a></li>
+                          
+                        <li><i class="fa fa-suitcase"></i>Trabaja en <a href="#">software development</a></li>
+                        <% SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy"); %>
+                        <li><i class="fa fa-calendar"></i>Nació el <%=formateador.format(usuarioActual.getIdpersona().getFechanacimiento())%></li>
+                        <li><i class="fa fa-rss"></i>Amigos <a href="#">51 People</a></li>
                       </ul>
                     </div>
                     <div class="panel-footer text-center">
-                      <a href="#"><i class="fa fa-share"></i>Read more...</a>
+                      <a href="#"><i class="fa fa-share"></i>Leer más...</a>
                     </div>
                   </div>
                 </div>
@@ -143,8 +158,8 @@
                 <div class="col-md-12">
                   <div class="panel panel-default panel-friends">
                     <div class="panel-heading">
-                      <a href="#" class="pull-right">View all&nbsp;<i class="fa fa-share-square-o"></i></a>
-                      <h3 class="panel-title"><i class="fa fa-users"></i>&nbsp; Friends</h3>
+                      <a href="#" class="pull-right">Ver todos&nbsp;<i class="fa fa-share-square-o"></i></a>
+                      <h3 class="panel-title"><i class="fa fa-users"></i>&nbsp; Amigos</h3>
                     </div>
                     <div class="panel-body text-center">
                       <ul class="friends">
@@ -189,8 +204,8 @@
                 <div class="col-md-12">
                   <div class="panel panel-default panel-photos">
                     <div class="panel-heading">
-                      <a href="#" class="pull-right">View all&nbsp;<i class="fa fa-share-square-o"></i></a>
-                      <h3 class="panel-title"><i class="fa fa-image"></i>&nbsp;Photos</h3>
+                      <a href="#" class="pull-right">Ver todas&nbsp;<i class="fa fa-share-square-o"></i></a>
+                      <h3 class="panel-title"><i class="fa fa-image"></i>&nbsp;Imágenes</h3>
                     </div>
                     <div class="panel-body text-center">
                       <ul class="photos">
@@ -239,11 +254,11 @@
                   <div class="well well-sm well-social-post">
                     <form>
                         <ul class="list-inline" id='list_PostActions'>
-                            <li class='active'><a href='#'><i class="fa fa-edit"></i><span class="hidden-xs">Update status</span></a></li>
-                            <li><a href='#'><i class="fa fa-camera"></i><span class="hidden-xs">Add photos/Video</span></a></li>
-                            <li><a href='#'><i class="fa fa-photo"></i><span class="hidden-xs">Create photo album</span></a></li>
+                            <li class='active'><a href='#'><i class="fa fa-edit"></i><span class="hidden-xs">Estado</span></a></li>
+                            <li><a href='#'><i class="fa fa-camera"></i><span class="hidden-xs">Imagen</span></a></li>
+                            <li><a href='#'><i class="fa fa-photo"></i><span class="hidden-xs">Crear albúm de imágenes</span></a></li>
                         </ul>
-                        <textarea class="form-control" placeholder="What's in your mind?"></textarea>
+                        <textarea class="form-control" placeholder="¿En qué estás pensando?"></textarea>
                         <ul class='list-inline post-actions'>
                             <li><a href="#"><span class="glyphicon glyphicon-camera"></span></a></li>
                             <li><a href="#" class='glyphicon glyphicon-user'></a></li>
@@ -266,7 +281,7 @@
                           <div class="pull-left meta">
                               <div class="title h5">
                                   <a href="#" class="post-user-name">Marting lowenyert</a>
-                                  uploaded a photo.
+                                  ha subido una imagen.
                               </div>
                               <h6 class="text-muted time">5 seconds ago</h6>
                           </div>
@@ -290,7 +305,7 @@
                       </div>
                       <div class="post-footer">
                           <div class="input-group"> 
-                              <input class="form-control" placeholder="Add a comment" type="text">
+                              <input class="form-control" placeholder="Agrega un comentario" type="text">
                               <span class="input-group-addon">
                                   <a href="#"><i class="fa fa-edit"></i></a>  
                               </span>
@@ -429,7 +444,7 @@
       </div><!-- timeline container-->
       <div class="space"></div>
     </div>
-
+        
   </body>
   <script src="assets/js/jquery.1.11.1.min.js" type="text/javascript"></script>
   <script src="bootstrap-3.3.4/js/bootstrap.min.js" type="text/javascript"></script>

@@ -49,6 +49,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
         <link href="css/bootstrap.icon-large.min.css" rel="stylesheet">
         <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link href="assets/css/timeline.css" rel="stylesheet" /> 
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
         <script src="js/jquery.js"></script>
         <script src="js/home/home.js"></script>
@@ -173,8 +174,8 @@
   -->                                 </div>
                                    <div class="pull-left meta">
                                        <div class="title h5">
-                                           <a href="#" class="text-primary"><%=p.getIdusuario().getIdpersona().getNombres()+" " +p.getIdusuario().getIdpersona().getApellidos() %></a>
-                                           posteo algo en su muro.
+                                           <a href="Perfil.jsp?idUsuario=<%=p.getIdusuario().getIdusuario()%>" class="text-primary"><%=p.getIdusuario().getIdpersona().getNombres()+" " +p.getIdusuario().getIdpersona().getApellidos() %></a>
+                                           ha publicado algo en su muro.
                                        </div>
                                            <h6 class="text-muted time"><%=p.getFechapost()%></h6>
                                    </div>
@@ -187,12 +188,16 @@
                                            <i class="fa fa-thumbs-up icon"></i>
                                            <%=p.getLikesList().size()%>
                                        </button>
+                                       <button class="btn btn-primary stat-item" id="botonLike<%=idPost%>" onclick="like('botonLike<%=idPost%>')">
+                                           <i class="fa fa-share icon"></i>
+                                           <%=p.getComentariosList().size()%>
+                                       </button>
                                        
                                    </div>
                                </div>
                                <div class="post-footer">
                                    <div class="input-group"> 
-                                       <input class="form-control" placeholder="Add a comment" type="text">
+                                       <input class="form-control" placeholder="Agrega un comentario" type="text">
                                        <span class="input-group-addon">
                                            <a href="#"><i class="fa fa-edit"></i></a>  
                                        </span>

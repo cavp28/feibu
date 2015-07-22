@@ -39,7 +39,7 @@
         javax.naming.Context context = new javax.naming.InitialContext();
         String jndiUrl = "java:comp/env/UsuariosFacade";
         UsuariosFacade usuariosFacade = (UsuariosFacade) context.lookup(jndiUrl);
-        %>
+    %>
     
     <body>
         <%
