@@ -4,6 +4,7 @@
     Author     : David Sanchez
 --%>
 
+<%@page import="edu.pucmm.pw.servicios.LikesFacade"%>
 <%@page import="edu.pucmm.pw.servicios.PaisesFacade"%>
 <%@page import="edu.pucmm.pw.entidades.Paises"%>
 <%@page import="edu.pucmm.pw.entidades.TipoLugares"%>
@@ -32,8 +33,12 @@
         
         String jndiUrl3 = "java:comp/env/TipoLugaresFacade";
         TipoLugaresFacade tipoLugaresFacade = (TipoLugaresFacade) context.lookup(jndiUrl3);
+        
         String jndiUrl4 = "java:comp/env/PaisesFacade";
         PaisesFacade paisesFacade = (PaisesFacade) context.lookup(jndiUrl4);
+     
+        String jndiUrl5 = "java:comp/env/LikesFacade";
+        LikesFacade likesFacade = (LikesFacade) context.lookup(jndiUrl5);
   
         %>
     <head>
