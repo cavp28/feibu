@@ -4,6 +4,15 @@
     Author     : david
 --%>
 
+<%@page import="edu.pucmm.pw.entidades.Comentarios"%>
+<%@page import="edu.pucmm.pw.servicios.LikesFacade"%>
+<%@page import="edu.pucmm.pw.servicios.PaisesFacade"%>
+<%@page import="edu.pucmm.pw.servicios.TipoLugaresFacade"%>
+<%@page import="edu.pucmm.pw.servicios.ComentariosFacade"%>
+<%@page import="edu.pucmm.pw.servicios.PostsFacade"%>
+<%@page import="java.util.List"%>
+<%@page import="java.util.Collections"%>
+<%@page import="edu.pucmm.pw.entidades.Posts"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="edu.pucmm.pw.entidades.Usuarios"%>
 <%@page import="edu.pucmm.pw.servicios.UsuariosFacade"%>
@@ -37,6 +46,22 @@
         javax.naming.Context context = new javax.naming.InitialContext();
         String jndiUrl = "java:comp/env/UsuariosFacade";
         UsuariosFacade usuariosFacade = (UsuariosFacade) context.lookup(jndiUrl);
+        
+        String jndiUrl1 = "java:comp/env/PostsFacade";
+        PostsFacade postsFacade = (PostsFacade) context.lookup(jndiUrl1);
+        
+        String jndiUrl2 = "java:comp/env/ComentariosFacade";
+        ComentariosFacade comentariosFacade = (ComentariosFacade) context.lookup(jndiUrl2);
+        
+        String jndiUrl3 = "java:comp/env/TipoLugaresFacade";
+        TipoLugaresFacade tipoLugaresFacade = (TipoLugaresFacade) context.lookup(jndiUrl3);
+        
+        String jndiUrl4 = "java:comp/env/PaisesFacade";
+        PaisesFacade paisesFacade = (PaisesFacade) context.lookup(jndiUrl4);
+     
+        String jndiUrl5 = "java:comp/env/LikesFacade";
+        LikesFacade likesFacade = (LikesFacade) context.lookup(jndiUrl5);
+ 
     %>
   <body>
     <div id="navbar-full">
@@ -75,7 +100,7 @@
                 </div> 
               </form>
               <ul class="nav navbar-nav navbar-right navbar-opts">
-                <li class="active"><a href="index-2.html"><i class="fa fa-tasks fa-2x_"></i>Timeline</a></li>
+                <li class="active"><a href="index.jsp"><i class="fa fa-tasks fa-2x_"></i>Home</a></li>
                 <li><a href="about.html"><i class="fa fa-info-circle fa-2x_"></i>Información</a></li>
                 <li><a href="friends.html"><i class="fa fa-users fa-2x_"></i>Amigos</a></li>
                 <li><a href="photos.html"><i class="fa fa-file-image-o fa-2x_"></i>Imágenes</a></li>
@@ -268,166 +293,85 @@
 
               <div class="row">
                 <!-- first post -->
+                        
+                <% 
+                    List<Posts> listaPost = null;
+                            
+                    listaPost =postsFacade.findAll(); //usuarioActual.getPostsList(); // 
+                    Collections.reverse(listaPost);                             
+                    for(Posts p : listaPost){  
+                        String idPost = p.getIdpost().toString();
+                                
+                     %>                
                 <div class="col-md-12">
                   <div class="panel panel-white post panel-shadow">
                       <div class="post-heading">
                           <div class="pull-left image">
                               <img src="img/Profile/profile.jpg" class="img-rounded avatar" alt="user profile image">
                           </div>
-                          <div class="pull-left meta">
-                              <div class="title h5">
-                                  <a href="#" class="post-user-name">Marting lowenyert</a>
-                                  ha subido una imagen.
-                              </div>
-                              <h6 class="text-muted time">5 seconds ago</h6>
+                            <div class="pull-left meta">
+                                <div class="title h5">
+                                    <%if(p.getEmisorusuario()==null){%>
+                                        <a href="Perfil.jsp?idUsuarioPerfil=<%=p.getIdusuario().getIdusuario()%>" class="text-primary"><%=p.getIdusuario().getIdpersona().getNombres()+" " +p.getIdusuario().getIdpersona().getApellidos() %></a>
+                                </div>
+                                    <h6 class="text-muted time"><%=p.getFechapost()%></h6><%}%>
+                                    <%if(p.getEmisorusuario()!=null){%>
+                                        <a href="Perfil.jsp?idUsuarioPerfil=<%=p.getEmisorusuario().getIdusuario()%>" class="text-primary"><%=p.getEmisorusuario().getIdpersona().getNombres()+" " +p.getEmisorusuario().getIdpersona().getApellidos() %></a>
+                                        ha recibido una publicacion de <a href="Perfil.jsp?idUsuario=<%=p.getIdusuario().getIdusuario()%>"class="text-primary"><%=p.getIdusuario().getIdpersona().getNombres()+" " +p.getIdusuario().getIdpersona().getApellidos() %></a>
+                            </div>
+                              <h6 class="text-muted time"><%=p.getFechapost()%></h6><%}%>
                           </div>
-                      </div>
-                      <div class="post-image">
-                          <img src="img/Post/place-234-87.jpg" class="image show-in-modal" alt="image post">
-                      </div>
-                      <div class="post-description">
-                          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc tristique dignissim urna, in dictum mauris sagittis eget. 
-                          Integer luctus risus ac diam ultrices, ultricies tempus arcu sollicitudin</p>
-                          <div class="stats">
-                              <a href="#" class="btn btn-default stat-item btn-responsive">
-                                  <i class="fa fa-thumbs-up icon"></i>
-                                  228
-                              </a>
-                              <a href="#" class="btn btn-default stat-item btn-responsive">
-                                  <i class="fa fa-share icon"></i>
-                                  128
-                              </a>
-                          </div>
-                      </div>
-                      <div class="post-footer">
-                          <div class="input-group"> 
-                              <input class="form-control" placeholder="Agrega un comentario" type="text">
-                              <span class="input-group-addon">
-                                  <a href="#"><i class="fa fa-edit"></i></a>  
-                              </span>
-                          </div>
-                          <ul class="comments-list">
-                              <li class="comment">
-                                  <a class="pull-left" href="#">
-                                      <img class="avatar" src="img/Friends/guy-4.jpg" alt="avatar">
-                                  </a>
-                                  <div class="comment-body">
-                                      <div class="comment-heading">
-                                          <h4 class="comment-user-name"><a href="#">Markton contz</a></h4>
-                                          <h5 class="time">7 minutes ago</h5>
-                                      </div>
-                                      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
-                                  </div>
-                              </li>
-                              <li class="comment">
-                                  <a class="pull-left" href="#">
-                                      <img class="avatar" src="img/Friends/woman-8.jpg" alt="avatar">
-                                  </a>
-                                  <div class="comment-body">
-                                      <div class="comment-heading">
-                                          <h4 class="comment-user-name"><a href="#">Yira Cartmen</a></h4>
-                                          <h5 class="time">3 minutes ago</h5>
-                                      </div>
-                                      <p>Lorem ipsum dolor sit amet, consectetur</p>
-                                  </div>
-                              </li>
-                              <li class="comment">
-                                  <a class="pull-left" href="#">
-                                      <img class="avatar" src="img/Friends/child-1.jpg" alt="avatar">
-                                  </a>
-                                  <div class="comment-body">
-                                      <div class="comment-heading">
-                                          <h4 class="comment-user-name"><a href="#">Dora ty bluekl</a></h4>
-                                          <h5 class="time">10 seconds ago</h5>
-                                      </div>
-                                      <p>Lorem ipsum dolor sit amet</p>
-                                  </div>
-                              </li>
-                          </ul>
-                      </div>
-                  </div>
-                </div><!-- end first post -->
-                
-
-                <!-- second post -->
-                <div class="col-md-12">
-                  <div class="panel panel-white post panel-shadow">
-                      <div class="post-heading">
-                          <div class="pull-left image">
-                              <img src="img/Profile/profile.jpg" class="img-rounded avatar" alt="user profile image">
-                          </div>
-                          <div class="pull-left meta">
-                              <div class="title h5">
-                                  <a href="#" class="post-user-name">Marting lowenyert</a>
-                                  uploaded a photo.
-                              </div>
-                              <h6 class="text-muted time">5 seconds ago</h6>
-                          </div>
-                      </div>
-                      <div class="post-image">
-                          <img src="img/Post/pic1.jpg" class="image show-in-modal" alt="image post">
-                      </div>
-                      <div class="post-description">
-                          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc tristique dignissim urna, in dictum mauris sagittis eget</p>
-                          <div class="stats">
-                              <a href="#" class="btn btn-default stat-item btn-responsive">
-                                  <i class="fa fa-thumbs-up icon"></i>
-                                  228
-                              </a>
-                              <a href="#" class="btn btn-default stat-item btn-responsive">
-                                  <i class="fa fa-share icon"></i>
-                                  128
-                              </a>
-                          </div>
-                      </div>
-                      <div class="post-footer">
-                          <div class="input-group"> 
-                              <input class="form-control" placeholder="Add a comment" type="text">
-                              <span class="input-group-addon">
-                                  <a href="#"><i class="fa fa-edit"></i></a>  
-                              </span>
-                          </div>
-                          <ul class="comments-list">
-                              <li class="comment">
-                                  <a class="pull-left" href="#">
-                                      <img class="avatar" src="img/Friends/guy-3.jpg" alt="avatar">
-                                  </a>
-                                  <div class="comment-body">
-                                      <div class="comment-heading">
-                                          <h4 class="comment-user-name"><a href="#">Antony andrew lobghi</a></h4>
-                                          <h5 class="time">7 minutes ago</h5>
-                                      </div>
-                                      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
-                                  </div>
-                              </li>
-                              <li class="comment">
-                                  <a class="pull-left" href="#">
-                                      <img class="avatar" src="img/Friends/guy-2.jpg" alt="avatar">
-                                  </a>
-                                  <div class="comment-body">
-                                      <div class="comment-heading">
-                                          <h4 class="comment-user-name"><a href="#">Jeferh Smith</a></h4>
-                                          <h5 class="time">3 minutes ago</h5>
-                                      </div>
-                                      <p>Lorem ipsum dolor sit amet, consectetur</p>
-                                  </div>
-                              </li>
-                              <li class="comment">
-                                  <a class="pull-left" href="#">
-                                      <img class="avatar" src="img/Friends/woman-2.jpg" alt="avatar">
-                                  </a>
-                                  <div class="comment-body">
-                                      <div class="comment-heading">
-                                          <h4 class="comment-user-name"><a href="#">Maria fernanda coronel</a></h4>
-                                          <h5 class="time">10 seconds ago</h5>
-                                      </div>
-                                      <p>Lorem ipsum dolor sit amet</p>
-                                  </div>
-                              </li>
-                          </ul>
-                      </div>
-                  </div>
-                </div><!-- end second post -->
+                        </div>
+                        <div class="post-image">
+                            <!-- en caso de que el post tenga imagenes --->
+                          <!--<img src="img/Post/place-234-87.jpg" class="image show-in-modal" alt="image post">-->
+                        </div>
+                        <div class="post-description">
+                            <p><em><%=p.getDescripcion()%></em></p>
+                            <div class="stats" id="botonLike<%=idPost%>div">
+                                <button class="btn btn-primary stat-item" id="botonLike<%=idPost%>" onclick="like('botonLike<%=idPost%>')">
+                                    <i class="fa fa-thumbs-up icon"></i>
+                                    <%=p.getLikesList().size()%>
+                                </button>
+                                <button class="btn btn-primary stat-item" id="botonLike<%=idPost%>" onclick="like('botonLike<%=idPost%>')">
+                                    <i class="fa fa-share icon"></i>
+                                    <%=p.getComentariosList().size()%>
+                                </button>
+                            </div>
+                        </div>
+                               <div class="post-footer">
+                                   <div class="input-group"> 
+                                       <input class="form-control" placeholder="Agrega un comentario" type="text">
+                                       <span class="input-group-addon">
+                                           <a href="#"><i class="fa fa-edit"></i></a>  
+                                       </span>
+                                   </div>
+                                   <ul class="comments-list">
+                                    <%
+                                            List<Comentarios> listaComentarios = p.getComentariosList();
+                                            for(Comentarios c : listaComentarios){
+                                    %>
+                                    <li class="comment">
+                                    <a class="pull-left" href="#">
+                                        <!--<img class="avatar" src="img/Friends/guy-3.jpg" alt="avatar">-->
+                                    </a>
+                                    <div class="comment-body">
+                                        <div class="comment-heading">
+                                            <h4 class="comment-user-name"><a href="#"><%= c.getIdusuario().getIdpersona().getNombres() + " " + c.getIdusuario().getIdpersona().getApellidos() %></a></h4>
+                                            <h5 class="time"> <%=c.getFecha()%> </h5>
+                                        </div>
+                                        <p><%=c.getComentario()%></p>
+                                    </div>
+                                </li>
+                                <%
+                                    }
+                                %>                                                     
+                           </ul>
+                        </div>
+                    </div>
+                </div>
+                <%} %><!-- end first post -->
+                <!-- end second post -->
               </div>
             </div><!-- end right content-->
           </div>
@@ -442,8 +386,7 @@
     </div>
     <%}   
     ///caso donde un usuario esta visitando el perfil de un amigo
-    if(request.getParameter("idUsuarioPerfil")!=null &&
-        application.getAttribute("idUsuario")!=null){
+    if(request.getParameter("idUsuarioPerfil")!=null && application.getAttribute("idUsuario")!=null){
         application.setAttribute("idUsuarioPerfil",request.getParameter("idUsuarioPerfil"));
         usuarioPerfil = usuariosFacade.find(Integer.parseInt(request.getParameter("idUsuarioPerfil")));
         usuarioActual = usuariosFacade.find(application.getAttribute("idUsuario"));%>
@@ -460,7 +403,7 @@
                 </div> 
               </form>
               <ul class="nav navbar-nav navbar-right navbar-opts">
-                <li class="active"><a href="index-2.html"><i class="fa fa-tasks fa-2x_"></i>Timeline</a></li>
+                <li class="active"><a href="index.jsp"><i class="fa fa-tasks fa-2x_"></i>Home</a></li>
                 <li><a href="about.html"><i class="fa fa-info-circle fa-2x_"></i>Información</a></li>
                 <li><a href="friends.html"><i class="fa fa-users fa-2x_"></i>Amigos</a></li>
                 <li><a href="photos.html"><i class="fa fa-file-image-o fa-2x_"></i>Imágenes</a></li>
@@ -651,169 +594,89 @@
                 </div>
               </div>
 
-              <div class="row">
+            <div class="row">
                 <!-- first post -->
+                        
+                <% 
+                    List<Posts> listaPost = null;
+                            
+                    listaPost =usuarioPerfil.getPostsList2(); // 
+                    Collections.reverse(listaPost);                             
+                    for(Posts p : listaPost){  
+                        String idPost = p.getIdpost().toString();
+                                
+                     %>                
                 <div class="col-md-12">
-                  <div class="panel panel-white post panel-shadow">
-                      <div class="post-heading">
-                          <div class="pull-left image">
-                              <img src="img/Profile/profile.jpg" class="img-rounded avatar" alt="user profile image">
-                          </div>
-                          <div class="pull-left meta">
-                              <div class="title h5">
-                                  <a href="#" class="post-user-name">Marting lowenyert</a>
-                                  ha subido una imagen.
-                              </div>
-                              <h6 class="text-muted time">5 seconds ago</h6>
-                          </div>
-                      </div>
-                      <div class="post-image">
-                          <img src="img/Post/place-234-87.jpg" class="image show-in-modal" alt="image post">
-                      </div>
-                      <div class="post-description">
-                          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc tristique dignissim urna, in dictum mauris sagittis eget. 
-                          Integer luctus risus ac diam ultrices, ultricies tempus arcu sollicitudin</p>
-                          <div class="stats">
-                              <a href="#" class="btn btn-default stat-item btn-responsive">
-                                  <i class="fa fa-thumbs-up icon"></i>
-                                  228
-                              </a>
-                              <a href="#" class="btn btn-default stat-item btn-responsive">
-                                  <i class="fa fa-share icon"></i>
-                                  128
-                              </a>
-                          </div>
-                      </div>
-                      <div class="post-footer">
-                          <div class="input-group"> 
-                              <input class="form-control" placeholder="Agrega un comentario" type="text">
-                              <span class="input-group-addon">
-                                  <a href="#"><i class="fa fa-edit"></i></a>  
-                              </span>
-                          </div>
-                          <ul class="comments-list">
-                              <li class="comment">
-                                  <a class="pull-left" href="#">
-                                      <img class="avatar" src="img/Friends/guy-4.jpg" alt="avatar">
-                                  </a>
-                                  <div class="comment-body">
-                                      <div class="comment-heading">
-                                          <h4 class="comment-user-name"><a href="#">Markton contz</a></h4>
-                                          <h5 class="time">7 minutes ago</h5>
-                                      </div>
-                                      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
-                                  </div>
-                              </li>
-                              <li class="comment">
-                                  <a class="pull-left" href="#">
-                                      <img class="avatar" src="img/Friends/woman-8.jpg" alt="avatar">
-                                  </a>
-                                  <div class="comment-body">
-                                      <div class="comment-heading">
-                                          <h4 class="comment-user-name"><a href="#">Yira Cartmen</a></h4>
-                                          <h5 class="time">3 minutes ago</h5>
-                                      </div>
-                                      <p>Lorem ipsum dolor sit amet, consectetur</p>
-                                  </div>
-                              </li>
-                              <li class="comment">
-                                  <a class="pull-left" href="#">
-                                      <img class="avatar" src="img/Friends/child-1.jpg" alt="avatar">
-                                  </a>
-                                  <div class="comment-body">
-                                      <div class="comment-heading">
-                                          <h4 class="comment-user-name"><a href="#">Dora ty bluekl</a></h4>
-                                          <h5 class="time">10 seconds ago</h5>
-                                      </div>
-                                      <p>Lorem ipsum dolor sit amet</p>
-                                  </div>
-                              </li>
-                          </ul>
-                      </div>
-                  </div>
-                </div><!-- end first post -->
-                
-
-                <!-- second post -->
-                <div class="col-md-12">
-                  <div class="panel panel-white post panel-shadow">
-                      <div class="post-heading">
-                          <div class="pull-left image">
-                              <img src="img/Profile/profile.jpg" class="img-rounded avatar" alt="user profile image">
-                          </div>
-                          <div class="pull-left meta">
-                              <div class="title h5">
-                                  <a href="#" class="post-user-name">Marting lowenyert</a>
-                                  uploaded a photo.
-                              </div>
-                              <h6 class="text-muted time">5 seconds ago</h6>
-                          </div>
-                      </div>
-                      <div class="post-image">
-                          <img src="img/Post/pic1.jpg" class="image show-in-modal" alt="image post">
-                      </div>
-                      <div class="post-description">
-                          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc tristique dignissim urna, in dictum mauris sagittis eget</p>
-                          <div class="stats">
-                              <a href="#" class="btn btn-default stat-item btn-responsive">
-                                  <i class="fa fa-thumbs-up icon"></i>
-                                  228
-                              </a>
-                              <a href="#" class="btn btn-default stat-item btn-responsive">
-                                  <i class="fa fa-share icon"></i>
-                                  128
-                              </a>
-                          </div>
-                      </div>
-                      <div class="post-footer">
-                          <div class="input-group"> 
-                              <input class="form-control" placeholder="Add a comment" type="text">
-                              <span class="input-group-addon">
-                                  <a href="#"><i class="fa fa-edit"></i></a>  
-                              </span>
-                          </div>
-                          <ul class="comments-list">
-                              <li class="comment">
-                                  <a class="pull-left" href="#">
-                                      <img class="avatar" src="img/Friends/guy-3.jpg" alt="avatar">
-                                  </a>
-                                  <div class="comment-body">
-                                      <div class="comment-heading">
-                                          <h4 class="comment-user-name"><a href="#">Antony andrew lobghi</a></h4>
-                                          <h5 class="time">7 minutes ago</h5>
-                                      </div>
-                                      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
-                                  </div>
-                              </li>
-                              <li class="comment">
-                                  <a class="pull-left" href="#">
-                                      <img class="avatar" src="img/Friends/guy-2.jpg" alt="avatar">
-                                  </a>
-                                  <div class="comment-body">
-                                      <div class="comment-heading">
-                                          <h4 class="comment-user-name"><a href="#">Jeferh Smith</a></h4>
-                                          <h5 class="time">3 minutes ago</h5>
-                                      </div>
-                                      <p>Lorem ipsum dolor sit amet, consectetur</p>
-                                  </div>
-                              </li>
-                              <li class="comment">
-                                  <a class="pull-left" href="#">
-                                      <img class="avatar" src="img/Friends/woman-2.jpg" alt="avatar">
-                                  </a>
-                                  <div class="comment-body">
-                                      <div class="comment-heading">
-                                          <h4 class="comment-user-name"><a href="#">Maria fernanda coronel</a></h4>
-                                          <h5 class="time">10 seconds ago</h5>
-                                      </div>
-                                      <p>Lorem ipsum dolor sit amet</p>
-                                  </div>
-                              </li>
-                          </ul>
-                      </div>
-                  </div>
-                </div><!-- end second post -->
-              </div>
+                    <div class="panel panel-white post panel-shadow">
+                            <div class="post-heading">
+                                <div class="pull-left image">
+                                    <!-- <img src="img/Profile/profile.jpg" class="img-rounded avatar" alt="user profile image">
+  -->                           </div>
+                                <div class="pull-left meta">
+                                    <div class="title h5">
+                                        <%if(p.getEmisorusuario()==null){%>
+                                           <a href="Perfil.jsp?idUsuarioPerfil=<%=p.getIdusuario().getIdusuario()%>" class="text-primary"><%=p.getIdusuario().getIdpersona().getNombres()+" " +p.getIdusuario().getIdpersona().getApellidos() %></a>
+                                           ha publicado algo en su muro.
+                                       </div>
+                                           <h6 class="text-muted time"><%=p.getFechapost()%></h6>
+                                           <%}%>
+                                           <%if(p.getEmisorusuario()!=null){%>
+                                           <a href="Perfil.jsp?idUsuarioPerfil=<%=p.getEmisorusuario().getIdusuario()%>" class="text-primary"><%=p.getEmisorusuario().getIdpersona().getNombres()+" " +p.getEmisorusuario().getIdpersona().getApellidos() %></a>
+                                           ha recibido una publicacion de <a href="Perfil.jsp?idUsuario=<%=p.getIdusuario().getIdusuario()%>"class="text-primary"><%=p.getIdusuario().getIdpersona().getNombres()+" " +p.getIdusuario().getIdpersona().getApellidos() %></a>
+                                    </div>
+                                    <h6 class="text-muted time"><%=p.getFechapost()%></h6>
+                                    <%}%>        
+                            </div>
+                    </div>
+                        <div class="post-image">
+                            <!-- en caso de que el post tenga imagenes --->
+                          <!--<img src="img/Post/place-234-87.jpg" class="image show-in-modal" alt="image post">-->
+                        </div>
+                        <div class="post-description">
+                            <p><em><%=p.getDescripcion()%></em></p>
+                            <div class="stats" id="botonLike<%=idPost%>div">
+                                <button class="btn btn-primary stat-item" id="botonLike<%=idPost%>" onclick="like('botonLike<%=idPost%>')">
+                                    <i class="fa fa-thumbs-up icon"></i>
+                                    <%=p.getLikesList().size()%>
+                                </button>
+                                <button class="btn btn-primary stat-item" id="botonLike<%=idPost%>" onclick="like('botonLike<%=idPost%>')">
+                                    <i class="fa fa-share icon"></i>
+                                    <%=p.getComentariosList().size()%>
+                                </button>
+                            </div>
+                        </div>
+                               <div class="post-footer">
+                                   <div class="input-group"> 
+                                       <input class="form-control" placeholder="Agrega un comentario" type="text">
+                                       <span class="input-group-addon">
+                                           <a href="#"><i class="fa fa-edit"></i></a>  
+                                       </span>
+                                   </div>
+                                   <ul class="comments-list">
+                                    <%
+                                            List<Comentarios> listaComentarios = p.getComentariosList();
+                                            for(Comentarios c : listaComentarios){
+                                    %>
+                                    <li class="comment">
+                                    <a class="pull-left" href="#">
+                                        <!--<img class="avatar" src="img/Friends/guy-3.jpg" alt="avatar">-->
+                                    </a>
+                                    <div class="comment-body">
+                                        <div class="comment-heading">
+                                            <h4 class="comment-user-name"><a href="#"><%= c.getIdusuario().getIdpersona().getNombres() + " " + c.getIdusuario().getIdpersona().getApellidos() %></a></h4>
+                                            <h5 class="time"> <%=c.getFecha()%> </h5>
+                                        </div>
+                                        <p><%=c.getComentario()%></p>
+                                    </div>
+                                </li>
+                                <%
+                                    }
+                                %>                                                     
+                           </ul>
+                        </div>
+                    </div>
+                </div>
+                <%} %><!-- end first post -->
             </div><!-- end right content-->
           </div>
           <div class="col-md-12 col-sm-12">
@@ -825,10 +688,8 @@
       </div><!-- timeline container-->
       <div class="space"></div>
     </div>
-  <%}%>
-  <% if(usuarioActual==null && usuarioPerfil==null) response.sendRedirect("index.jsp");  %>  
-    
-
+      <%} else{response.sendRedirect("index.jsp");}%>
+  
         
   </body>
   <script src="assets/js/jquery.1.11.1.min.js" type="text/javascript"></script>

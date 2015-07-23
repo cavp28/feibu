@@ -154,8 +154,7 @@
                                 <td><a href="convertirAdmin.jsp?idPersona=<%=usuarios.getIdpersona().getIdpersona()%>">
                                         <button type="button" class="btn-primary"> Convertir a Administrador</button>
                                     </a>
-                                </td>
-                                <td><a href="eliminarUsuario.jsp?idPersona=<%=usuarios.getIdpersona().getIdpersona()%>">
+                                    <a href="eliminarUsuario.jsp?idPersona=<%=usuarios.getIdpersona().getIdpersona()%>">
                                         <button type="button" class="btn-primary"> Eliminar usuario</button>
                                     </a>
                                 </td>
@@ -186,8 +185,8 @@
  </div>
                    
         <%    
-            } else{ %> <h2> No hay sesión </h2> 
-        <%}%>
+            } else{ response.sendRedirect("index.jsp");}
+        %>
         
  
     <!-- script references -->

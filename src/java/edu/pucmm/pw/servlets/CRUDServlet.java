@@ -268,19 +268,22 @@ public class CRUDServlet extends HttpServlet {
                     Usuarios usuarioPost = usuariosFacade.find(Integer.parseInt(sesion.getAttribute("idUsuario").toString()));
                     //nuevoPost.setTipopost(tipoPostFacade.find(request.getParameter("tipoPost")));
                     nuevoPost.setDescripcion(request.getParameter("postPerfil"));
-                    nuevoPost.setIdusuario(usuarioPost);
-                    if (emisorPost!=usuarioPost && emisorPost!=null){
+                   if (emisorPost!=usuarioPost && emisorPost!=null){
                         nuevoPost.setTipopost(tipoPostFacade.find(3));
                         nuevoPost.setEmisorusuario(emisorPost);
+                        nuevoPost.setIdusuario(usuarioPost);
                         nuevoPost.setFechapost(new Date());
                         postsFacade.create(nuevoPost);
-                        response.sendRedirect("Perfil.jsp?+idUsuarioPerfil="+sesion.getAttribute("idUsuarioPerfil").toString());
-                    }
+                        response.sendRedirect("Perfil.jsp?idUsuarioPerfil="+emisorPost.getIdusuario());
+                        
+                     }
                     if (emisorPost==null){
+                        nuevoPost.setIdusuario(usuarioPost);
                         nuevoPost.setTipopost(tipoPostFacade.find(1));
                         nuevoPost.setFechapost(new Date());
                         postsFacade.create(nuevoPost);
-                       response.sendRedirect("Perfil.jsp?+idUsuarioPerfil="+sesion.getAttribute("idUsuario").toString());
+                        response.sendRedirect("Perfil.jsp?idUsuario="+sesion.getAttribute("idUsuario").toString());
+                        
                     }
                 } catch(NumberFormatException | IOException e){
                    out.println("<p>Hay problemas, contante</p>");

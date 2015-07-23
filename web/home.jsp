@@ -171,7 +171,7 @@
                                <div class="post-heading">
                                    <div class="pull-left image">
                                       <!-- <img src="img/Profile/profile.jpg" class="img-rounded avatar" alt="user profile image">
-  -->                                 </div>
+  -->                              </div>
                                    <div class="pull-left meta">
                                        <div class="title h5">
                                            <%if(p.getEmisorusuario()==null){%>
@@ -181,17 +181,16 @@
                                            <h6 class="text-muted time"><%=p.getFechapost()%></h6>
                                            <%}%>
                                            <%if(p.getEmisorusuario()!=null){%>
-                                           <a href="Perfil.jsp?idUsuario=<%=p.getIdusuario().getIdusuario()%>" class="text-primary"><%=p.getEmisorusuario().getIdpersona().getNombres()+" " +p.getEmisorusuario().getIdpersona().getApellidos() %></a>
-                                            ha recibido una publicacion de <%=p.getIdusuario().getIdpersona().getNombres() +" "+p.getIdusuario().getIdpersona().getApellidos()%>
-                                       </div>
-                                           <h6 class="text-muted time"><%=p.getFechapost()%></h6>
-                                           <%}%>
-                                           
-                                   </div>
-                               </div>
-                                   <br>
-                               <div class="post-description">
-                                   <p><em><%=p.getDescripcion()%></em></p>
+                                           <a href="Perfil.jsp?idUsuarioPerfil=<%=p.getEmisorusuario().getIdusuario()%>" class="text-primary"><%=p.getEmisorusuario().getIdpersona().getNombres()+" " +p.getEmisorusuario().getIdpersona().getApellidos() %></a>
+                                           ha recibido una publicacion de <a href="Perfil.jsp?idUsuario=<%=p.getIdusuario().getIdusuario()%>"class="text-primary"><%=p.getIdusuario().getIdpersona().getNombres()+" " +p.getIdusuario().getIdpersona().getApellidos() %></a>
+                                    </div>
+                                    <h6 class="text-muted time"><%=p.getFechapost()%></h6>
+                                    <%}%>        
+                                </div>
+                            </div>
+                            <br>
+                            <div class="post-description">
+                                <p><em><%=p.getDescripcion()%></em></p>
                                    <div class="stats" id="botonLike<%=idPost%>div">
                                        <button class="btn btn-primary stat-item" id="botonLike<%=idPost%>" onclick="like('botonLike<%=idPost%>')">
                                            <i class="fa fa-thumbs-up icon"></i>
@@ -203,7 +202,7 @@
                                        </button>
                                        
                                    </div>
-                               </div>
+                            </div>
                                <div class="post-footer">
                                    <div class="input-group"> 
                                        <input class="form-control" placeholder="Agrega un comentario" type="text">
