@@ -182,7 +182,7 @@
                                            <%}%>
                                            <%if(p.getEmisorusuario()!=null){%>
                                            <a href="Perfil.jsp?idUsuarioPerfil=<%=p.getEmisorusuario().getIdusuario()%>" class="text-primary"><%=p.getEmisorusuario().getIdpersona().getNombres()+" " +p.getEmisorusuario().getIdpersona().getApellidos() %></a>
-                                           ha recibido una publicacion de <a href="Perfil.jsp?idUsuario=<%=p.getIdusuario().getIdusuario()%>"class="text-primary"><%=p.getIdusuario().getIdpersona().getNombres()+" " +p.getIdusuario().getIdpersona().getApellidos() %></a>
+                                           ha recibido una publicacion de <a href="Perfil.jsp?idUsuarioPerfil=<%=p.getIdusuario().getIdusuario()%>"class="text-primary"><%=p.getIdusuario().getIdpersona().getNombres()+" " +p.getIdusuario().getIdpersona().getApellidos() %></a>
                                     </div>
                                     <h6 class="text-muted time"><%=p.getFechapost()%></h6>
                                     <%}%>        
