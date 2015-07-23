@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -18,6 +19,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
@@ -30,6 +32,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author david
  */
 @Entity
+@Table(name = "IMAGENES")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Imagenes.findAll", query = "SELECT i FROM Imagenes i"),
@@ -42,13 +45,17 @@ public class Imagenes implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
+    @Column(name = "IDIMAGEN")
     private Integer idimagen;
     @Size(max = 2147483647)
+    @Column(name = "DESCRIPCION")
     private String descripcion;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 2147483647)
+    @Column(name = "IMAGEN")
     private String imagen;
+    @Column(name = "FECHASUBIDA")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechasubida;
     @ManyToMany(mappedBy = "imagenesList")

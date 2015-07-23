@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -19,6 +20,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
@@ -31,6 +33,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author david
  */
 @Entity
+@Table(name = "COMENTARIOS")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Comentarios.findAll", query = "SELECT c FROM Comentarios c"),
@@ -42,11 +45,14 @@ public class Comentarios implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
+    @Column(name = "IDCOMENTARIO")
     private Integer idcomentario;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 2147483647)
+    @Column(name = "COMENTARIO")
     private String comentario;
+    @Column(name = "FECHA")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fecha;
     @JoinTable(name = "COMENTARIOS_POSTS", joinColumns = {

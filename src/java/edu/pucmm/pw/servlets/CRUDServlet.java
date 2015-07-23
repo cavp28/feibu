@@ -243,17 +243,17 @@ public class CRUDServlet extends HttpServlet {
             //Creando Post 
             if (request.getParameter("post") != null /*&& request.getParameter("tipoPost")!=null*/) {
                 try{
-                HttpSession sesion = request.getSession();
-                Posts nuevoPost = new Posts();
-                Usuarios usuarioPost = usuariosFacade.find(sesion.getAttribute("idUsuario"));
-                //nuevoPost.setTipopost(tipoPostFacade.find(request.getParameter("tipoPost")));
-                nuevoPost.setTipopost(tipoPostFacade.find(1));
+                    ServletContext sesion = request.getSession().getServletContext();
+                    Posts nuevoPost = new Posts();
+                    Usuarios usuarioPost = usuariosFacade.find(sesion.getAttribute("idUsuario"));
+                    //nuevoPost.setTipopost(tipoPostFacade.find(request.getParameter("tipoPost")));
+                    nuevoPost.setTipopost(tipoPostFacade.find(1));
 
-                nuevoPost.setDescripcion(request.getParameter("post"));
-                nuevoPost.setIdusuario(usuarioPost);
-                nuevoPost.setFechapost(new Date());
-                postsFacade.create(nuevoPost);
-                response.sendRedirect("home.jsp");
+                    nuevoPost.setDescripcion(request.getParameter("post"));
+                    nuevoPost.setIdusuario(usuarioPost);
+                    nuevoPost.setFechapost(new Date());
+                    postsFacade.create(nuevoPost);
+                    response.sendRedirect("home.jsp");
                 } catch(Exception e){
                    out.println("<p>Hay problemas, contante</p>");
                 }

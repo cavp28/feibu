@@ -18,8 +18,7 @@ import javax.persistence.PersistenceContext;
 public class PostsFacade extends AbstractFacade<Posts> {
     @PersistenceContext(unitName = "parcial2_grupo6PU")
     private EntityManager em;
-    
-    
+
     @Override
     protected EntityManager getEntityManager() {
         return em;
@@ -28,5 +27,5 @@ public class PostsFacade extends AbstractFacade<Posts> {
     public PostsFacade() {
         super(Posts.class);
     }
-        
+    
 }

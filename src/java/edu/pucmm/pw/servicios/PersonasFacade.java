@@ -6,11 +6,9 @@
 package edu.pucmm.pw.servicios;
 
 import edu.pucmm.pw.entidades.Personas;
-import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 
 /**
  *
@@ -29,6 +27,5 @@ public class PersonasFacade extends AbstractFacade<Personas> {
     public PersonasFacade() {
         super(Personas.class);
     }
-
     
 }

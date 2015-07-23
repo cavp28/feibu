@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -19,6 +20,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
@@ -31,6 +33,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author david
  */
 @Entity
+@Table(name = "PERSONAS")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Personas.findAll", query = "SELECT p FROM Personas p"),
@@ -46,29 +49,36 @@ public class Personas implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
+    @Column(name = "IDPERSONA")
     private Integer idpersona;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
+    @Column(name = "NOMBRES")
     private String nombres;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
+    @Column(name = "APELLIDOS")
     private String apellidos;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
+    @Column(name = "CONTRASENA")
     private String contrasena;
     @Basic(optional = false)
     @NotNull
+    @Column(name = "FECHANACIMIENTO")
     @Temporal(TemporalType.DATE)
     private Date fechanacimiento;
+    @Column(name = "FECHACREACION")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechacreacion;
     // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 55)
+    @Column(name = "EMAIL")
     private String email;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idpersona")
     private List<Usuarios> usuariosList;
@@ -79,7 +89,7 @@ public class Personas implements Serializable {
     @ManyToOne(optional = false)
     private Ciudades lugaractual;
     @JoinColumn(name = "IDROL", referencedColumnName = "IDROL")
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Roles idrol;
     @JoinColumn(name = "SEXO", referencedColumnName = "IDSEXO")
     @ManyToOne(optional = false)

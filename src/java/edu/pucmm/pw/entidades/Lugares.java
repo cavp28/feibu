@@ -6,7 +6,6 @@
 package edu.pucmm.pw.entidades;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -19,8 +18,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -31,6 +29,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author david
  */
 @Entity
+@Table(name = "LUGARES")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Lugares.findAll", query = "SELECT l FROM Lugares l"),
@@ -40,7 +39,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Lugares.findByFechainicio", query = "SELECT l FROM Lugares l WHERE l.fechainicio = :fechainicio"),
     @NamedQuery(name = "Lugares.findByFechafin", query = "SELECT l FROM Lugares l WHERE l.fechafin = :fechafin")})
 public class Lugares implements Serializable {
-  private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
@@ -70,7 +69,6 @@ public class Lugares implements Serializable {
     @JoinColumn(name = "IDTIPOLUGAR", referencedColumnName = "IDTIPOLUGAR")
     @ManyToOne(optional = false)
     private TipoLugares idtipolugar;
- 
 
     public Lugares() {
     }
@@ -118,11 +116,11 @@ public class Lugares implements Serializable {
         this.fechainicio = fechainicio;
     }
 
-    public int getFechafin() {
+    public Integer getFechafin() {
         return fechafin;
     }
 
-    public void setFechafin(int fechafin) {
+    public void setFechafin(Integer fechafin) {
         this.fechafin = fechafin;
     }
 

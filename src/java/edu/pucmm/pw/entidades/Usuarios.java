@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -20,6 +21,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -29,6 +31,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author david
  */
 @Entity
+@Table(name = "USUARIOS")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Usuarios.findAll", query = "SELECT u FROM Usuarios u"),
@@ -40,10 +43,15 @@ public class Usuarios implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
+    @Column(name = "IDUSUARIO")
     private Integer idusuario;
     @Size(max = 50)
+    @Column(name = "APODO")
     private String apodo;
+    @Column(name = "FOTOPERFIL")
     private Integer fotoperfil;
+    @ManyToMany(mappedBy = "usuariosList")
+    private List<Posts> postsList;
     @JoinTable(name = "USUARIOS_NOTIFICACIONES", joinColumns = {
         @JoinColumn(name = "IDUSUARIO", referencedColumnName = "IDUSUARIO")}, inverseJoinColumns = {
         @JoinColumn(name = "IDNOTIFICACIONES", referencedColumnName = "IDNOTIFICACIONES")})
@@ -54,13 +62,6 @@ public class Usuarios implements Serializable {
         @JoinColumn(name = "IDLUGAR", referencedColumnName = "IDLUGAR")})
     @ManyToMany
     private List<Lugares> lugaresList;
-    @JoinTable(name = "AMISTADES", joinColumns = {
-        @JoinColumn(name = "ESAMIGO", referencedColumnName = "IDUSUARIO")}, inverseJoinColumns = {
-        @JoinColumn(name = "DE", referencedColumnName = "IDUSUARIO")})
-    @ManyToMany
-    private List<Usuarios> usuariosList;
-    @ManyToMany(mappedBy = "usuariosList")
-    private List<Usuarios> usuariosList1;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idusuario")
     private List<Imagenes> imagenesList;
     @JoinColumn(name = "IDPERSONA", referencedColumnName = "IDPERSONA")
@@ -73,7 +74,9 @@ public class Usuarios implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idusuario")
     private List<Albumes> albumesList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idusuario")
-    private List<Posts> postsList;
+    private List<Posts> postsList1;
+    @OneToMany(mappedBy = "emisorusuario")
+    private List<Posts> postsList2;
 
     public Usuarios() {
     }
@@ -107,6 +110,15 @@ public class Usuarios implements Serializable {
     }
 
     @XmlTransient
+    public List<Posts> getPostsList() {
+        return postsList;
+    }
+
+    public void setPostsList(List<Posts> postsList) {
+        this.postsList = postsList;
+    }
+
+    @XmlTransient
     public List<Notificaciones> getNotificacionesList() {
         return notificacionesList;
     }
@@ -122,24 +134,6 @@ public class Usuarios implements Serializable {
 
     public void setLugaresList(List<Lugares> lugaresList) {
         this.lugaresList = lugaresList;
-    }
-
-    @XmlTransient
-    public List<Usuarios> getUsuariosList() {
-        return usuariosList;
-    }
-
-    public void setUsuariosList(List<Usuarios> usuariosList) {
-        this.usuariosList = usuariosList;
-    }
-
-    @XmlTransient
-    public List<Usuarios> getUsuariosList1() {
-        return usuariosList1;
-    }
-
-    public void setUsuariosList1(List<Usuarios> usuariosList1) {
-        this.usuariosList1 = usuariosList1;
     }
 
     @XmlTransient
@@ -187,12 +181,21 @@ public class Usuarios implements Serializable {
     }
 
     @XmlTransient
-    public List<Posts> getPostsList() {
-        return postsList;
+    public List<Posts> getPostsList1() {
+        return postsList1;
     }
 
-    public void setPostsList(List<Posts> postsList) {
-        this.postsList = postsList;
+    public void setPostsList1(List<Posts> postsList1) {
+        this.postsList1 = postsList1;
+    }
+
+    @XmlTransient
+    public List<Posts> getPostsList2() {
+        return postsList2;
+    }
+
+    public void setPostsList2(List<Posts> postsList2) {
+        this.postsList2 = postsList2;
     }
 
     @Override

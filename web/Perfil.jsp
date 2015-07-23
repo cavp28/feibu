@@ -7,7 +7,6 @@
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="edu.pucmm.pw.entidades.Usuarios"%>
 <%@page import="edu.pucmm.pw.servicios.UsuariosFacade"%>
-<%@page import="edu.pucmm.pw.servicios.UsuariosFacade"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
