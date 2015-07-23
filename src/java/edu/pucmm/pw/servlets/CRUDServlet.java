@@ -277,7 +277,7 @@ public class CRUDServlet extends HttpServlet {
                         response.sendRedirect("Perfil.jsp?idUsuarioPerfil="+emisorPost.getIdusuario());
                         
                      }
-                    if (emisorPost==null){
+                    if (emisorPost==null || emisorPost==usuarioPost){
                         nuevoPost.setIdusuario(usuarioPost);
                         nuevoPost.setTipopost(tipoPostFacade.find(1));
                         nuevoPost.setFechapost(new Date());
