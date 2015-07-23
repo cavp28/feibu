@@ -258,7 +258,25 @@ public class CRUDServlet extends HttpServlet {
                    out.println("<p>Hay problemas, contante</p>");
                 }
             }
-            
+            if(request.getParameter("postPerfil")!=null){
+                try{
+                    ServletContext sesion = request.getSession().getServletContext();
+                    Posts nuevoPost = new Posts();
+                    Usuarios emisorPost = usuariosFacade.find(Integer.parseInt(sesion.getAttribute("idUsuarioPerfil").toString()));
+                    Usuarios usuarioPost = usuariosFacade.find(Integer.parseInt(sesion.getAttribute("idUsuario").toString()));
+                    //nuevoPost.setTipopost(tipoPostFacade.find(request.getParameter("tipoPost")));
+                    nuevoPost.setTipopost(tipoPostFacade.find(3));
+
+                    nuevoPost.setDescripcion(request.getParameter("postPerfil"));
+                    nuevoPost.setIdusuario(usuarioPost);
+                    nuevoPost.setEmisorusuario(emisorPost);
+                    nuevoPost.setFechapost(new Date());
+                    postsFacade.create(nuevoPost);
+                    response.sendRedirect("Perfil.jsp?+idUsuarioPerfil="+sesion.getAttribute("idUsuarioPerfil").toString());
+                } catch(Exception e){
+                   out.println("<p>Hay problemas, contante</p>");
+                }
+            }
             out.println("<html>");
         } catch (ParseException ex) {
             Logger.getLogger(CRUDServlet.class.getName()).log(Level.SEVERE, null, ex);

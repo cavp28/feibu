@@ -144,7 +144,7 @@
                                    <form class="form-horizontal" role="form" action="/parcial2_grupo6/CRUDServlet" method="POST">
                                     <h4>¿Qué hay de nuevo?</h4>
                                      <div class="form-group" style="padding:14px;">
-                                         <textarea name ="post" id="post" class="form-control" placeholder="Actualiza tu estado" required></textarea>
+                                         <textarea name ="post" id="post" class="form-control" placeholder="Actualiza tu estado" required="required"></textarea>
                                     </div>
 <!--                                    <label name="tipoPost" value="1" hidden></label>-->
                                     <button class="btn btn-primary pull-right" type="submit">Publicar</button>
@@ -174,10 +174,19 @@
   -->                                 </div>
                                    <div class="pull-left meta">
                                        <div class="title h5">
-                                           <a href="Perfil.jsp?idUsuario=<%=p.getIdusuario().getIdusuario()%>" class="text-primary"><%=p.getIdusuario().getIdpersona().getNombres()+" " +p.getIdusuario().getIdpersona().getApellidos() %></a>
+                                           <%if(p.getEmisorusuario()==null){%>
+                                           <a href="Perfil.jsp?idUsuarioPerfil=<%=p.getIdusuario().getIdusuario()%>" class="text-primary"><%=p.getIdusuario().getIdpersona().getNombres()+" " +p.getIdusuario().getIdpersona().getApellidos() %></a>
                                            ha publicado algo en su muro.
                                        </div>
                                            <h6 class="text-muted time"><%=p.getFechapost()%></h6>
+                                           <%}%>
+                                           <%if(p.getEmisorusuario()!=null){%>
+                                           <a href="Perfil.jsp?idUsuario=<%=p.getIdusuario().getIdusuario()%>" class="text-primary"><%=p.getEmisorusuario().getIdpersona().getNombres()+" " +p.getEmisorusuario().getIdpersona().getApellidos() %></a>
+                                            ha recibido una publicacion de <%=p.getIdusuario().getIdpersona().getNombres() +" "+p.getIdusuario().getIdpersona().getApellidos()%>
+                                       </div>
+                                           <h6 class="text-muted time"><%=p.getFechapost()%></h6>
+                                           <%}%>
+                                           
                                    </div>
                                </div>
                                    <br>
