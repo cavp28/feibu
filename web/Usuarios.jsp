@@ -153,7 +153,12 @@
                                 <%if (usuarios.getIdpersona().getIdrol().getIdrol()!=1){%>
                                 <td><a href="convertirAdmin.jsp?idPersona=<%=usuarios.getIdpersona().getIdpersona()%>">
                                         <button type="button" class="btn-primary"> Convertir a Administrador</button>
-                                    </a></td>
+                                    </a>
+                                </td>
+                                <td><a href="eliminarUsuario.jsp?idPersona=<%=usuarios.getIdpersona().getIdpersona()%>">
+                                        <button type="button" class="btn-primary"> Eliminar usuario</button>
+                                    </a>
+                                </td>
                            </tr><%}}%>
                         </table>
                           </div>
