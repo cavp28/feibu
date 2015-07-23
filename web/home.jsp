@@ -196,21 +196,16 @@
                                            <i class="fa fa-thumbs-up icon"></i>
                                            <%=p.getLikesList().size()%>
                                        </button>
-                                       <button class="btn btn-primary stat-item" id="botonLike<%=idPost%>" onclick="like('botonLike<%=idPost%>')">
-                                           <i class="fa fa-share icon"></i>
-                                           <%=p.getComentariosList().size()%>
-                                       </button>
+                                       <div class="btn btn-info stat-item">
+                                           <i class="fa fa-comments icon"></i>
+                                           <span id = "cantidadCommentPost<%=idPost%>"> <%=p.getComentariosList().size()%> </span>
+                                       </div>
                                        
                                    </div>
                             </div>
                                <div class="post-footer">
-                                   <div class="input-group"> 
-                                       <input class="form-control" placeholder="Agrega un comentario" type="text">
-                                       <span class="input-group-addon">
-                                           <a href="#"><i class="fa fa-edit"></i></a>  
-                                       </span>
-                                   </div>
-                                   <ul class="comments-list">
+                                   
+                                   <ul class="comments-list" id="<%=p.getIdpost()%>">
                                        <%
                                             List<Comentarios> listaComentarios = p.getComentariosList();
                                             for(Comentarios c : listaComentarios){
@@ -224,7 +219,7 @@
                                                         <h4 class="comment-user-name"><a href="#"><%= c.getIdusuario().getIdpersona().getNombres() + " " + c.getIdusuario().getIdpersona().getApellidos() %></a></h4>
                                                         <h5 class="time"> <%=c.getFecha()%> </h5>
                                                     </div>
-                                                    <p><%=c.getComentario()%></p>
+                                                    <p style="word-break: break-all"><%=c.getComentario()%></p>
                                                 </div>
                                             </li>
                                        <%
@@ -232,6 +227,12 @@
                                        %>
                                                                              
                                    </ul>
+                                   <div class="input-group"> 
+                                       <input class="form-control" id="agregarComentario<%=p.getIdpost()%>" placeholder="Agrega un comentario" type="text">
+                                       <span class="input-group-addon">
+                                           <a class="postComentario" id="<%=p.getIdpost()%>"href="javascript:void(0)"><i class="fa fa-edit"></i></a>  
+                                       </span>
+                                   </div>
                                </div>
                            </div>
                          </div>
