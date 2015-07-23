@@ -262,18 +262,27 @@ public class CRUDServlet extends HttpServlet {
                 try{
                     ServletContext sesion = request.getSession().getServletContext();
                     Posts nuevoPost = new Posts();
-                    Usuarios emisorPost = usuariosFacade.find(Integer.parseInt(sesion.getAttribute("idUsuarioPerfil").toString()));
+                    Usuarios emisorPost = null;
+                    if (sesion.getAttribute("idUsuarioPerfil")!=null)
+                        emisorPost=usuariosFacade.find(Integer.parseInt(sesion.getAttribute("idUsuarioPerfil").toString()));
                     Usuarios usuarioPost = usuariosFacade.find(Integer.parseInt(sesion.getAttribute("idUsuario").toString()));
                     //nuevoPost.setTipopost(tipoPostFacade.find(request.getParameter("tipoPost")));
-                    nuevoPost.setTipopost(tipoPostFacade.find(3));
-
                     nuevoPost.setDescripcion(request.getParameter("postPerfil"));
                     nuevoPost.setIdusuario(usuarioPost);
-                    nuevoPost.setEmisorusuario(emisorPost);
-                    nuevoPost.setFechapost(new Date());
-                    postsFacade.create(nuevoPost);
-                    response.sendRedirect("Perfil.jsp?+idUsuarioPerfil="+sesion.getAttribute("idUsuarioPerfil").toString());
-                } catch(Exception e){
+                    if (emisorPost!=usuarioPost && emisorPost!=null){
+                        nuevoPost.setTipopost(tipoPostFacade.find(3));
+                        nuevoPost.setEmisorusuario(emisorPost);
+                        nuevoPost.setFechapost(new Date());
+                        postsFacade.create(nuevoPost);
+                        response.sendRedirect("Perfil.jsp?+idUsuarioPerfil="+sesion.getAttribute("idUsuarioPerfil").toString());
+                    }
+                    if (emisorPost==null){
+                        nuevoPost.setTipopost(tipoPostFacade.find(1));
+                        nuevoPost.setFechapost(new Date());
+                        postsFacade.create(nuevoPost);
+                       response.sendRedirect("Perfil.jsp?+idUsuarioPerfil="+sesion.getAttribute("idUsuario").toString());
+                    }
+                } catch(NumberFormatException | IOException e){
                    out.println("<p>Hay problemas, contante</p>");
                 }
             }

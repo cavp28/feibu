@@ -259,7 +259,7 @@
                             <li><a href="#"><span class="glyphicon glyphicon-camera"></span></a></li>
                             <li><a href="#" class='glyphicon glyphicon-user'></a></li>
                             <li><a href="#" class='glyphicon glyphicon-map-marker'></a></li>
-                            <li><button style="position: fixed"type="submit" class='btn btn-info btn-xs btn-fill'>Publicar</button></li>
+                            <li><button type="submit" class='btn btn-info btn-xs btn-fill'>Publicar</button></li>
                         </ul>
                     </form>
                   </div>
@@ -826,8 +826,8 @@
       <div class="space"></div>
     </div>
   <%}%>
-      
-        
+  <% if(usuarioActual==null && usuarioPerfil==null) response.sendRedirect("index.jsp");  %>  
+    
 
         
   </body>
