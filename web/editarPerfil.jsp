@@ -45,9 +45,9 @@
       
     <body>
         <% 
-            if(application.getAttribute("idUsuario")!=null){
+            if(request.getSession().getAttribute("idUsuario")!=null){
                 Usuarios usuarioActual = null;
-                usuarioActual = usuariosFacade.find(application.getAttribute("idUsuario")); 
+                usuarioActual = usuariosFacade.find(request.getSession().getAttribute("idUsuario")); 
         %>
         
         <div class="wrapper">

@@ -154,8 +154,8 @@ public class CRUDServlet extends HttpServlet {
                         Usuarios usuario = new Usuarios();
                         usuario.setIdpersona(persona);
                         usuariosFacade.create(usuario);
-                        ServletContext sc = request.getSession().getServletContext();
-                        sc.setAttribute("idUsuario", usuario.getIdusuario());
+                        HttpSession sesion = request.getSession();
+                        sesion.setAttribute("idUsuario", usuario.getIdusuario());
                         response.sendRedirect("editarPerfil.jsp");
                     } catch (NoSuchAlgorithmException ex) {
                         System.out.println(ex.getMessage());
@@ -190,7 +190,7 @@ public class CRUDServlet extends HttpServlet {
                     if (contrasenaGenerada.equals(usuarioLogin.getIdpersona().getContrasena())) {
                         Cookie cookie = new Cookie("idUsuario", usuarioLogin.getIdusuario().toString());
                         cookie.setMaxAge(86400);//poniendo 
-                        ServletContext sesion = request.getSession().getServletContext();
+                        HttpSession sesion = request.getSession();
                         sesion.setAttribute("idUsuario", usuarioLogin.getIdusuario());
                         response.sendRedirect("home.jsp");
                     } else {
@@ -243,9 +243,8 @@ public class CRUDServlet extends HttpServlet {
             //Creando Post 
             if (request.getParameter("post") != null /*&& request.getParameter("tipoPost")!=null*/) {
                 try{
-                    ServletContext sesion = request.getSession().getServletContext();
                     Posts nuevoPost = new Posts();
-                    Usuarios usuarioPost = usuariosFacade.find(sesion.getAttribute("idUsuario"));
+                    Usuarios usuarioPost = usuariosFacade.find(request.getSession().getAttribute("idUsuario"));
                     //nuevoPost.setTipopost(tipoPostFacade.find(request.getParameter("tipoPost")));
                     nuevoPost.setTipopost(tipoPostFacade.find(1));
 
@@ -259,34 +258,34 @@ public class CRUDServlet extends HttpServlet {
                 }
             }
             if(request.getParameter("postPerfil")!=null){
-                try{
-                    ServletContext sesion = request.getSession().getServletContext();
-                    Posts nuevoPost = new Posts();
-                    Usuarios emisorPost = null;
-                    if (sesion.getAttribute("idUsuarioPerfil")!=null)
-                        emisorPost=usuariosFacade.find(Integer.parseInt(sesion.getAttribute("idUsuarioPerfil").toString()));
-                    Usuarios usuarioPost = usuariosFacade.find(Integer.parseInt(sesion.getAttribute("idUsuario").toString()));
-                    //nuevoPost.setTipopost(tipoPostFacade.find(request.getParameter("tipoPost")));
-                    nuevoPost.setDescripcion(request.getParameter("postPerfil"));
-                   if (emisorPost!=usuarioPost && emisorPost!=null){
+                Posts nuevoPost = new Posts();
+                Usuarios emisorPost =usuariosFacade.find(request.getSession().getAttribute("idUsuario"));
+                Usuarios usuarioPost=null;
+                nuevoPost.setDescripcion(request.getParameter("postPerfil"));
+                nuevoPost.setFechapost(new Date());
+                if (request.getSession().getAttribute("idUsuarioPerfil").toString()!=null){
+                    usuarioPost=usuariosFacade.find(Integer.parseInt(request.getSession().getAttribute("idUsuarioPerfil").toString()));
+                    System.out.println("SOy el emisor"+emisorPost.getIdpersona().getNombres());
+                    System.out.println("Perfil de"+usuarioPost.getIdpersona().getNombres());
+                    if(usuarioPost!=emisorPost){
                         nuevoPost.setTipopost(tipoPostFacade.find(3));
-                        nuevoPost.setEmisorusuario(emisorPost);
-                        nuevoPost.setIdusuario(usuarioPost);
-                        nuevoPost.setFechapost(new Date());
-                        postsFacade.create(nuevoPost);
-                        response.sendRedirect("Perfil.jsp?idUsuarioPerfil="+emisorPost.getIdusuario());
-                        
-                     }
-                    if (emisorPost==null || emisorPost==usuarioPost){
-                        nuevoPost.setIdusuario(usuarioPost);
-                        nuevoPost.setTipopost(tipoPostFacade.find(1));
-                        nuevoPost.setFechapost(new Date());
-                        postsFacade.create(nuevoPost);
-                        response.sendRedirect("Perfil.jsp?idUsuario="+sesion.getAttribute("idUsuario").toString());
-                        
+                        nuevoPost.setEmisorusuario(usuarioPost);
+                        nuevoPost.setIdusuario(emisorPost);
                     }
-                } catch(NumberFormatException | IOException e){
-                   out.println("<p>Hay problemas, contante</p>");
+                    else{
+                        nuevoPost.setTipopost(tipoPostFacade.find(1));
+                        nuevoPost.setIdusuario(emisorPost);
+                    }
+                    postsFacade.create(nuevoPost);
+                    response.sendRedirect("Perfil.jsp?idUsuarioPerfil="+usuarioPost.getIdusuario());
+                        
+                }
+                else{
+                    usuarioPost=usuariosFacade.find(Integer.parseInt(request.getSession().getAttribute("idUsuario").toString()));
+                    nuevoPost.setIdusuario(usuarioPost);
+                    nuevoPost.setTipopost(tipoPostFacade.find(1));
+                    postsFacade.create(nuevoPost);
+                    response.sendRedirect("Perfil.jsp?idUsuario="+request.getSession().getAttribute("idUsuario").toString());
                 }
             }
             out.println("<html>");

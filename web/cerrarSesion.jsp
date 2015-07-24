@@ -13,8 +13,8 @@
     </head>
     <body>
         <%
-            session.invalidate();
-            response.sendRedirect(request.getContextPath());
+            request.getSession().invalidate();
+            response.sendRedirect("index.jsp");
         %>
     </body>
 </html>

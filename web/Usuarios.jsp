@@ -44,9 +44,9 @@
     <body>
         <%
         %><h2> <%=session.getAttribute("idUsuario")%></h2> <% 
-            if(application.getAttribute("idUsuario")!=null){
+            if(request.getSession().getAttribute("idUsuario")!=null){
                 Usuarios usuarioActual = null;
-                usuarioActual = usuariosFacade.find(application.getAttribute("idUsuario")); 
+                usuarioActual = usuariosFacade.find(request.getSession().getAttribute("idUsuario")); 
         %>
         
         <div class="wrapper">
@@ -98,7 +98,7 @@
                           <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-user"></i></a>
                             <ul class="dropdown-menu">
-                               <li><a href="#">Ver perfil</a></li>
+                               <li><a href="Perfil.jsp">Ver perfil</a></li>
                               <li><a href="editarPerfil.jsp" >Editar perfil</a></li>                              
                               <li><a href="">Imagenes</a></li>
                               <li><a href="">Sugerencias de amigos</a></li>
