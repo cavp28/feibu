@@ -100,9 +100,9 @@
                 </div> 
               </form>
               <ul class="nav navbar-nav navbar-right navbar-opts">
-                <li class="active"><a href="index.jsp"><i class="fa fa-tasks fa-2x_"></i>Home</a></li>
+                <li class="active"><a href="home.jsp"><i class="fa fa-tasks fa-2x_"></i>Home</a></li>
                 <li><a href="about.html"><i class="fa fa-info-circle fa-2x_"></i>Información</a></li>
-                <li><a href="friends.html"><i class="fa fa-users fa-2x_"></i>Amigos</a></li>
+                <li><a href="Amigos.jsp?idPerfil=<%=usuarioActual.getIdusuario()%>"><i class="fa fa-users fa-2x_"></i>Amigos</a></li>
                 <li><a href="photos.html"><i class="fa fa-file-image-o fa-2x_"></i>Imágenes</a></li>
               </ul>
             </div>
@@ -160,8 +160,8 @@
                   <div class="panel panel-default panel-user-detail">
                     <div class="panel-body">
                       <ul class="list-unstyled">
-                          
-                        <li><i class="fa fa-suitcase"></i>Trabaja en <a href="#">software development</a></li>
+                        <li><i class="fa fa-search"></i>De <a href="#"><%=usuarioActual.getIdpersona().getLugarnacimiento().getNombre()%>,
+                        <%=usuarioActual.getIdpersona().getLugarnacimiento().getIdpais().getNombre()%></a></li>
                         <% SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy"); %>
                         <li><i class="fa fa-calendar"></i>Nació el <%=formateador.format(usuarioActual.getIdpersona().getFechanacimiento())%></li>
                         <li><i class="fa fa-rss"></i>Amigos <a href="#">51 People</a></li>
@@ -386,9 +386,10 @@
     </div> 
       <%}
         if(request.getParameter("idUsuarioPerfil")!=null && request.getSession().getAttribute("idUsuario")!=null){
+        
         usuarioPerfil = usuariosFacade.find(Integer.parseInt(request.getParameter("idUsuarioPerfil")));
         request.getSession().setAttribute("idUsuarioPerfil", request.getParameter("idUsuarioPerfil"));
-  usuarioActual = usuariosFacade.find(Integer.parseInt(request.getSession().getAttribute("idUsuario").toString()));%>
+        usuarioActual = usuariosFacade.find(Integer.parseInt(request.getSession().getAttribute("idUsuario").toString()));%>
         
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
               <ul class="nav navbar-nav">
@@ -403,9 +404,9 @@
                 </div> 
               </form>
               <ul class="nav navbar-nav navbar-right navbar-opts">
-                <li class="active"><a href="index.jsp"><i class="fa fa-tasks fa-2x_"></i>Home</a></li>
+                <li class="active"><a href="home.jsp"><i class="fa fa-tasks fa-2x_"></i>Home</a></li>
                 <li><a href="about.html"><i class="fa fa-info-circle fa-2x_"></i>Información</a></li>
-                <li><a href="friends.html"><i class="fa fa-users fa-2x_"></i>Amigos</a></li>
+                <li><a href="Amigos.jsp?idPerfil=<%=usuarioPerfil.getIdusuario()%>"><i class="fa fa-users fa-2x_"></i>Amigos</a></li>
                 <li><a href="photos.html"><i class="fa fa-file-image-o fa-2x_"></i>Imágenes</a></li>
               </ul>
             </div>
@@ -464,7 +465,8 @@
                     <div class="panel-body">
                       <ul class="list-unstyled">
                           
-                        <li><i class="fa fa-suitcase"></i>Trabaja en <a href="#">software development</a></li>
+                        <li><i class="fa fa-info-circle"></i>De <a href="#"><%=usuarioPerfil.getIdpersona().getLugarnacimiento().getNombre()%>,
+                                <%=usuarioPerfil.getIdpersona().getLugarnacimiento().getIdpais().getNombre()%></a></li>
                         <% SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy"); %>
                         <li><i class="fa fa-calendar"></i>Nació el <%=formateador.format(usuarioPerfil.getIdpersona().getFechanacimiento())%></li>
                         <li><i class="fa fa-rss"></i>Amigos <a href="#">51 People</a></li>
