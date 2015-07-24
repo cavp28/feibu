@@ -224,10 +224,10 @@ public class CRUDServlet extends HttpServlet {
                 if(!request.getParameter("fechaFinal").equals("Actualmente...")){
                     lugar.setFechafin(Integer.parseInt(request.getParameter("fechaFinal")));
                 }
-                ServletContext sc = request.getSession().getServletContext();
+                HttpSession sesion = request.getSession();
                 List <Usuarios> listaUsuarios = new ArrayList<>();
                 Usuarios us;
-                us=usuariosFacade.find(sc.getAttribute("idUsuario"));
+                us=usuariosFacade.find(sesion.getAttribute("idUsuario"));
                 System.out.println(us);
                 listaUsuarios.add(us);
                 lugar.setUsuariosList(listaUsuarios);
