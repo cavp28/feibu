@@ -53,6 +53,8 @@
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
         <script src="js/jquery.js"></script>
         <script src="js/home/home.js"></script>
+        <script src="js/dropzone/dropzone.js"></script>
+        <link rel="stylesheet" href="https://rawgit.com/enyo/dropzone/master/dist/dropzone.css">
 	<!--[if lt IE 9]>
         <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
 	<![endif]-->
@@ -140,7 +142,7 @@
                          <!-- main col left --> 
                          <div class="col-sm-5">
                                
-                             <div class="well"> 
+                             <div class="well" id ="post"> 
                                    <form class="form-horizontal" role="form" action="/parcial2_grupo6/CRUDServlet" method="POST">
                                     <h4>¿Qué hay de nuevo?</h4>
                                      <div class="form-group" style="padding:14px;">
@@ -148,12 +150,12 @@
                                     </div>
 <!--                                    <label name="tipoPost" value="1" hidden></label>-->
                                     <button class="btn btn-primary pull-right" type="submit">Publicar</button>
-                                    <ul class="list-inline">
-                                        <li><button id ="boton" class="glyphicon glyphicon-camera" ></button></li>
-                                        <li><input type="file" id="file"></li>
-                                        <li><div id="customfileupload">Seleccione una foto</div></li>
-                                    </ul> 
+                                    <ul class="list-inline" id="botonFoto">
+                                        <li><button id ="subirFoto" class="btn btn-default" onclick="agregarDropzone()"><i class="glyphicon glyphicon-camera"></i></button></li>                                      
+                                    </ul>
+                                    
                                   </form>
+                                 
                               </div>
                         <!-- Cargando Post -->
                         
