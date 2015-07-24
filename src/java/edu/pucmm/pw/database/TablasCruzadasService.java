@@ -40,7 +40,7 @@ public class TablasCruzadasService {
     public Connection getConexion(){
         Connection con = null;
         try {
-            con = DriverManager.getConnection("jdbc:h2:tcp://localhost/~/feibu1", "sa", "1");
+            con = DriverManager.getConnection("jdbc:h2:tcp://localhost/~/feibu", "sa", "");
         } catch (SQLException ex) {
             Logger.getLogger(TablasCruzadasService.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -27,6 +27,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -63,7 +64,7 @@ public class agregarComentarioServlet extends HttpServlet {
             //System.out.println(request.getParameter("idPost") + " : " + request.getParameter("comentario"));
             
             Posts postActual = postFacade.find(Integer.parseInt(request.getParameter("idPost")));
-            ServletContext sesion = request.getSession().getServletContext();
+            HttpSession sesion = request.getSession();
             
             Usuarios usuarioPost = usuariosFacade.find(sesion.getAttribute("idUsuario"));
             
@@ -73,7 +74,7 @@ public class agregarComentarioServlet extends HttpServlet {
             nuevoComentario.setFecha(new Date());
             comentariosFacade.create(nuevoComentario);
             String reponseJson = "";
-            Map<String, String> jsonMap = new HashMap<String, String>();
+            Map<String, String> jsonMap = new HashMap<>();
             boolean guardarComentarioPost = TablasCruzadasService.getInstancia().insertarComentarioPost(postActual, nuevoComentario);
             if(guardarComentarioPost){
                 
