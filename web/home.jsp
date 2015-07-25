@@ -106,7 +106,7 @@
                             <a href="#"><i class="glyphicon glyphicon-plus"></i></a>
                            </li>
                            <li>
-                                <a href="https://www.facebook.com/djse1993" title="Perfil">
+                                <a href="Perfil.jsp" title="Perfil">
                                 <img src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xap1/v/t1.0-1/c0.0.50.50/p50x50/1384338_10152731259415973_1038309681161336048_n.jpg?oh=30c601486023e844b1bf279bdea2ff58&oe=5614B6EC&__gda__=1448157405_699c164efb217456d05f7b3834006aab"
                                      alt id="profile_pic_header_736435972">
                                 <span class="_2dpb">

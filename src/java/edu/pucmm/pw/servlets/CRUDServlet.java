@@ -228,14 +228,18 @@ public class CRUDServlet extends HttpServlet {
                 List <Usuarios> listaUsuarios = new ArrayList<>();
                 Usuarios us;
                 us=usuariosFacade.find(sesion.getAttribute("idUsuario"));
-                System.out.println(us);
+                System.out.println(us.getIdpersona().getNombres());
                 listaUsuarios.add(us);
                 lugar.setUsuariosList(listaUsuarios);
                 List<Lugares> listaLugares = us.getLugaresList();
                 listaLugares.add(lugar);
                 us.setLugaresList(listaLugares);
+                listaLugares.stream().forEach((lugare) -> {
+                    System.out.println("Estoy en el lugar"+ lugare.getNombre());
+                });
                 lugaresFacade.create(lugar);
                 usuariosFacade.edit(us);
+                
                 response.sendRedirect("home.jsp");
             }
             
