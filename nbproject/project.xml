@@ -21,6 +21,13 @@
                 <library dirs="200">
                     <file>${libs.H2.classpath}</file>
                 </library>
+                <library dirs="200">
+                    <file>${file.reference.org.apache.commons.io-2.4.jar}</file>
+                </library>
+                <library dirs="200">
+                    <file>${file.reference.commons-io-2.4.jar}</file>
+                    <path-in-war>WEB-INF/lib</path-in-war>
+                </library>
             </web-module-libraries>
             <web-module-additional-libraries/>
             <source-roots>

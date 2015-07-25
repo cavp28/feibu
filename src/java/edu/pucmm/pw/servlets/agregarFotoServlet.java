@@ -50,7 +50,7 @@ public class agregarFotoServlet extends HttpServlet {
         Part p1 =request.getPart("archivo");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            String ruta = "C:\\FotosFeibu";
+            String ruta = "/home/david/Desktop";
             is =p1.getInputStream();
             
             String nombreArchivo = getMD5FromBytes(IOUtils.toByteArray(is));
