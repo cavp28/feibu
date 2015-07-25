@@ -105,10 +105,10 @@
 	fechaPost TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
 	descripcion varchar(MAX),
 	idUsuario int(12) not null,
-	muroUsuario int(12),
+	emisorUsuario int(12),
 	FOREIGN KEY(tipoPost) REFERENCES TipoPost(idTipoPost),
 	FOREIGN KEY(idUsuario) REFERENCES Usuarios(idUsuario),
-	FOREIGN KEY(muroUsuario) REFERENCES USUARIOS(idUsuario),
+	FOREIGN KEY(emisorUsuario) REFERENCES USUARIOS(idUsuario),
 	);
 
 	CREATE TABLE Comentarios(

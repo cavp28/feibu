@@ -1,3 +1,5 @@
+var activeSubirFoto = false;
+
 function like(botonPost) {
     var boton = $('#' + botonPost);
     var divs = $('#' + botonPost + 'div');
@@ -5,9 +7,60 @@ function like(botonPost) {
     boton.toggleClass("btn btn-default stat-item");
     console.log("entro");
 }
+
+function agregarDropzone(){
+   if(activeSubirFoto){
+       $('#dropzoneSubirFoto').remove();
+       activeSubirFoto = false;
+   } else {
+       $('#post.well').append('<form id="dropzoneSubirFoto" action="/parcial2_grupo6/agregarFotoServlet" class="dropzone" enctype="multipart/form-data">'+
+                              '<div class="dz-message">'+
+                               'Arroja o haz click para subir una foto.<br />'+
+                               '<span class="note">(Ojala que sea una buena foto. Si la foto <strong>no</strong> te gusta, solamente dale a remove.)</span>'+
+                               '</div>'+  
+                '</form>');
+       activeSubirFoto = true;
+        subirFotoDropzone = new Dropzone("#dropzoneSubirFoto", {
+		paramName : "archivo",
+		maxFilesize : 10, // MB
+		acceptedFiles : "image/*",
+		addRemoveLinks : true,
+		clickable : true,
+		autoProcessQueue : true,
+		maxFiles : 1,
+		parallelUploads : 1,
+		dictRemoveFile : "Remove file",
+		uploadMultiple : false,
+//		addedfile: function(a) {
+//            var c = this;
+//            return a.previewElement = Dropzone.createElement(this.options.previewTemplate), 
+//            a.previewTemplate = a.previewElement, 
+//            this.previewsContainer.appendChild(a.previewElement), 
+//            a.previewElement.querySelector("[data-dz-name]").textContent = a.name, 
+//            a.previewElement.querySelector("[data-dz-size]").innerHTML = this.filesize(a.size), 
+//            this.options.addRemoveLinks && (a._removeLink = 
+//            	Dropzone.createElement('<a class="btn btn-sm btn-danger btn-block" href="javascript:undefined;">' + this.options.dictRemoveFile + "</a>"), 
+//            	a._removeLink.addEventListener("click", function() {
+//            		Company.deleteImage(a,c);
+//            }), a.previewElement.appendChild(a._removeLink)),this._updateMaxFilesReachedClass()},
+//        init: function() {
+//            this.on("addedfile", function() {
+//              if (this.files[1]!=null){
+//                this.removeFile(this.files[0]);
+//              }
+//            });},
+//            success:function(a,b){
+//         	   a.id = b.data;
+//         	   $("#logoId").val(b.data);
+//            }
+
+	});
+   }
+    
+  
+}
 $(document).ready(function () {
-    $('.postComentario').on('click', function () {
-        
+    $('.postComentario').on('click', function () {        
         var idPost = $(this).attr('id');
         var comentario = $('#agregarComentario' + idPost).val();
         
@@ -46,4 +99,9 @@ $(document).ready(function () {
             }
         });
     });
+    
+    Dropzone.autoDiscover = false;
+    
+   
+    
 });
