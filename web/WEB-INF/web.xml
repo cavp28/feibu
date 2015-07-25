@@ -54,5 +54,10 @@
         <ejb-ref-name>RolesFacade</ejb-ref-name>
         <ejb-ref-type>Session</ejb-ref-type>
         <local>edu.pucmm.pw.servicios.RolesFacade</local>
+    </ejb-local-ref>       
+    <ejb-local-ref>
+        <ejb-ref-name>AlbumesFacade</ejb-ref-name>
+        <ejb-ref-type>Session</ejb-ref-type>
+        <local>edu.pucmm.pw.servicios.AlbumesFacade</local>
     </ejb-local-ref> 
 </web-app>

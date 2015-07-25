@@ -102,8 +102,8 @@
               <ul class="nav navbar-nav navbar-right navbar-opts">
                 <li class="active"><a href="home.jsp"><i class="fa fa-tasks fa-2x_"></i>Home</a></li>
                 <li><a href="about.html"><i class="fa fa-info-circle fa-2x_"></i>Información</a></li>
-                <li><a href="Amigos.jsp?idPerfil=<%=usuarioActual.getIdusuario()%>"><i class="fa fa-users fa-2x_"></i>Amigos</a></li>
-                <li><a href="photos.html"><i class="fa fa-file-image-o fa-2x_"></i>Imágenes</a></li>
+                <li><a href="Amigos.jsp?idUsuarioPerfil=<%=usuarioActual.getIdusuario()%>"><i class="fa fa-users fa-2x_"></i>Amigos</a></li>
+                <li><a href="albumes.jsp?idUsuarioPerfil=<%=usuarioActual.getIdusuario()%>"><i class="fa fa-file-image-o fa-2x_"></i>Álbumes</a></li>
               </ul>
             </div>
           </div>
@@ -179,7 +179,7 @@
                 <div class="col-md-12">
                   <div class="panel panel-default panel-friends">
                     <div class="panel-heading">
-                      <a href="#" class="pull-right">Ver todos&nbsp;<i class="fa fa-share-square-o"></i></a>
+                      <a href="Amigos.jsp?idUsuarioPerfil=<%=usuarioActual.getIdusuario()%>" class="pull-right">Ver todos&nbsp;<i class="fa fa-share-square-o"></i></a>
                       <h3 class="panel-title"><i class="fa fa-users"></i>&nbsp; Amigos</h3>
                     </div>
                     <div class="panel-body text-center">
@@ -220,52 +220,7 @@
                 </div><!-- end friends -->
               </div>
 
-              <!-- photos-->
-              <div class="row">
-                <div class="col-md-12">
-                  <div class="panel panel-default panel-photos">
-                    <div class="panel-heading">
-                      <a href="#" class="pull-right">Ver todas&nbsp;<i class="fa fa-share-square-o"></i></a>
-                      <h3 class="panel-title"><i class="fa fa-image"></i>&nbsp;Imágenes</h3>
-                    </div>
-                    <div class="panel-body text-center">
-                      <ul class="photos">
-                        <li>
-                            <a href="#">
-                              <img src="img/Photos/1.jpg" alt="photo 1" class="img-responsive show-in-modal">
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <img src="img/Photos/2.jpg" alt="photo 2" class="img-responsive show-in-modal">
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <img src="img/Photos/3.jpg" alt="photo 3" class="img-responsive show-in-modal">
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <img src="img/Photos/4.jpg" alt="photo 4" class="img-responsive show-in-modal">
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <img src="img/Photos/5.jpg" alt="photo 5" class="img-responsive show-in-modal">
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <img src="img/Photos/6.jpg" alt="photo 6" class="img-responsive show-in-modal">
-                            </a>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>  
-                </div><!-- end photos -->
-              </div>
-
+              
             </div><!-- end left content-->
 
             <!--============= right content (posts) ===========================-->
@@ -406,8 +361,8 @@
               <ul class="nav navbar-nav navbar-right navbar-opts">
                 <li class="active"><a href="home.jsp"><i class="fa fa-tasks fa-2x_"></i>Home</a></li>
                 <li><a href="about.html"><i class="fa fa-info-circle fa-2x_"></i>Información</a></li>
-                <li><a href="Amigos.jsp?idPerfil=<%=usuarioPerfil.getIdusuario()%>"><i class="fa fa-users fa-2x_"></i>Amigos</a></li>
-                <li><a href="photos.html"><i class="fa fa-file-image-o fa-2x_"></i>Imágenes</a></li>
+                <li><a href="Amigos.jsp?idUsuarioPerfil=<%=usuarioPerfil.getIdusuario()%>"><i class="fa fa-users fa-2x_"></i>Amigos</a></li>
+                <li><a href="albumes.jsp?idUsuarioPerfil=<%=usuarioPerfil.getIdusuario()%>"><i class="fa fa-file-image-o fa-2x_"></i>Álbumes</a></li>
               </ul>
             </div>
           </div>
@@ -484,7 +439,7 @@
                 <div class="col-md-12">
                   <div class="panel panel-default panel-friends">
                     <div class="panel-heading">
-                      <a href="#" class="pull-right">Ver todos&nbsp;<i class="fa fa-share-square-o"></i></a>
+                      <a href="Amigos.jsp?idUsuarioPerfil=<%=usuarioPerfil.getIdusuario()%>" class="pull-right">Ver todos&nbsp;<i class="fa fa-share-square-o"></i></a>
                       <h3 class="panel-title"><i class="fa fa-users"></i>&nbsp; Amigos</h3>
                     </div>
                     <div class="panel-body text-center">
@@ -523,52 +478,6 @@
                     </div>
                   </div>  
                 </div><!-- end friends -->
-              </div>
-
-              <!-- photos-->
-              <div class="row">
-                <div class="col-md-12">
-                  <div class="panel panel-default panel-photos">
-                    <div class="panel-heading">
-                      <a href="#" class="pull-right">Ver todas&nbsp;<i class="fa fa-share-square-o"></i></a>
-                      <h3 class="panel-title"><i class="fa fa-image"></i>&nbsp;Imágenes</h3>
-                    </div>
-                    <div class="panel-body text-center">
-                      <ul class="photos">
-                        <li>
-                            <a href="#">
-                              <img src="img/Photos/1.jpg" alt="photo 1" class="img-responsive show-in-modal">
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <img src="img/Photos/2.jpg" alt="photo 2" class="img-responsive show-in-modal">
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <img src="img/Photos/3.jpg" alt="photo 3" class="img-responsive show-in-modal">
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <img src="img/Photos/4.jpg" alt="photo 4" class="img-responsive show-in-modal">
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <img src="img/Photos/5.jpg" alt="photo 5" class="img-responsive show-in-modal">
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <img src="img/Photos/6.jpg" alt="photo 6" class="img-responsive show-in-modal">
-                            </a>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>  
-                </div><!-- end photos -->
               </div>
 
             </div><!-- end left content-->

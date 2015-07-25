@@ -81,9 +81,9 @@
                 <b>Feibú</b>
               </a>
             </div>
-            <%if (request.getParameter("idPerfil")!=null){
+            <%if (request.getParameter("idUsuarioPerfil")!=null){
                 Usuarios usuario = null;
-                usuario=usuariosFacade.find(Integer.parseInt(request.getParameter("idPerfil")));
+                usuario=usuariosFacade.find(Integer.parseInt(request.getParameter("idUsuarioPerfil")));
             %>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
               <ul class="nav navbar-nav">
@@ -98,10 +98,10 @@
                 </div> 
               </form>
               <ul class="nav navbar-nav navbar-right navbar-opts">
-                <li><a href="home.jsp"><i class="fa fa-tasks"></i>Home</a></li>
+                <li><a href="Perfil.jsp"><i class="fa fa-tasks"></i>Perfil</a></li>
                 <li><a href="about.html"><i class="fa fa-info-circle"></i>About</a></li>
                 <li class="active"><a href="amigos.jsp"><i class="fa fa-users"></i>Amigos</a></li>
-                <li><a href="photos.html"><i class="fa fa-file-image-o"></i>Photos</a></li>
+                <li><a href="albumes.jsp?idUsuarioPerfil=<%=usuario.getIdusuario()%>"><i class="fa fa-file-image-o"></i>Álbumes</a></li>
               </ul>
             </div>
           </div>
