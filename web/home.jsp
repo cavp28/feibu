@@ -4,6 +4,9 @@
     Author     : David Sanchez
 --%>
 
+<%@page import="java.util.ArrayList"%>
+<%@page import="edu.pucmm.pw.servicios.AmistadesFacade"%>
+<%@page import="edu.pucmm.pw.entidades.Amistades"%>
 <%@page import="edu.pucmm.pw.entidades.Likes"%>
 <%@page import="edu.pucmm.pw.servicios.LikesFacade"%>
 <%@page import="edu.pucmm.pw.servicios.PaisesFacade"%>
@@ -40,6 +43,9 @@
      
         String jndiUrl5 = "java:comp/env/LikesFacade";
         LikesFacade likesFacade = (LikesFacade) context.lookup(jndiUrl5);
+        
+        String jndiUrl6 = "java:comp/env/AmistadesFacade";
+        AmistadesFacade amistadesFacade = (AmistadesFacade) context.lookup(jndiUrl6);
   
         %>
     <head>
@@ -121,7 +127,7 @@
                            <ul class="dropdown-menu">
                               <li><a href="Perfil.jsp">Ver perfil</a></li>
                               <li><a href="editarPerfil.jsp">Editar perfil</a></li>                              
-                              <li><a href="">Sugerencias de amigos</a></li>
+                              <li><a data-toggle="modal" data-target="#sugerirAmigosModal">Sugerencias de amigos</a></li>
                               <li><a href="">Configuraciones</a></li>
                               <%if (usuarioActual.getIdpersona().getIdrol().getIdrol()==1){%>
                               <li><a href="Usuarios.jsp" >Ver todos los usuarios</a></li>    
@@ -133,7 +139,49 @@
                     </nav>
                 </div>
                 <!-- /top nav -->
-              
+                
+                <!-- Modal -->
+                <div id="sugerirAmigosModal" class="modal fade" role="dialog">
+                  <div class="modal-dialog">
+
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Sugerencias de Amigos</h4>
+                      </div>
+                      <div class="modal-body">
+                          <div class="text-center pagination-centered list-group"> 
+                              <%
+                                List<Usuarios> listaUsuariosR = usuariosFacade.findAll();
+                                List<Usuarios> listaUsuariosASuguerir;
+                                List<Amistades> listaAmistades = usuarioActual.getAmistadesList();
+                                List<Usuarios> listaDeAmigos = new ArrayList<Usuarios>();
+                                for(Amistades a : listaAmistades){
+                                    listaDeAmigos.add(usuariosFacade.find(a.getSoyamigode().getIdusuario()));
+                                }
+                                for(Usuarios u : listaUsuariosR){
+                                   if(!listaDeAmigos.contains(u)){
+                                        if((usuarioActual.getIdusuario()!=u.getIdusuario() && usuarioActual.getIdpersona().getLugaractual().getIdciudad()==u.getIdpersona().getLugaractual().getIdciudad()) || ( usuarioActual.getIdusuario()!=u.getIdusuario() &&
+                                                                                            usuarioActual.getIdpersona().getLugarnacimiento().getIdciudad()==u.getIdpersona().getLugarnacimiento().getIdciudad())){
+                              
+                              %>
+                              <a href="Perfil.jsp?idUsuarioPerfil=<%=u.getIdusuario()%>" class="list-group-item"><%= u.getIdpersona().getNombres() + " " + u.getIdpersona().getApellidos() %></a>
+                              <%
+                                    }
+                                   }
+                                }
+                              %>
+                          </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+                
                 <div class="padding">
                     <div class="full col-sm-12 col-lg-offset-3">
                       
@@ -161,13 +209,15 @@
                         <!-- Cargando Post -->
                         
                         <% 
-                            List<Posts> listaPost = null;
+                            List<Posts> listaPost = new ArrayList<Posts>();
                             
                             listaPost =postsFacade.findAll(); //usuarioActual.getPostsList(); // 
+                            
                             Collections.reverse(listaPost);                             
                             for(Posts p : listaPost){  
                                 String idPost = p.getIdpost().toString();
-                                
+                                if(p.getIdusuario()==usuarioActual||listaDeAmigos.contains(p.getIdusuario()))
+                                {
                         %>
                          <div class="col-md-12">
                            <div class="panel panel-white post panel-shadow">
@@ -200,6 +250,7 @@
                                             boolean usuarioLikesPost = false;
                                             int likeId = -1;
                                             List<Likes> listaLikesPost = p.getLikesList();
+                                            
                                             for(Likes l : listaLikesPost){
                                                 if(l.getIdusuario().getIdusuario() == usuarioActual.getIdusuario()){
                                                     usuarioLikesPost = true;
@@ -208,11 +259,14 @@
                                             }
                                             if(usuarioLikesPost){
                                        %>
-                                       <button class="btn btn-primary stat-item" id="like<%=idPost%>" onclick="likes(this,<%=idPost%>,<%=likeId%>)">
+                                       <button class="btn btn-primary stat-item" id="like<%=idPost%>" onclick="likes(this,<%=idPost%>,<%=likeId%>)" data-toggle="tooltip" data-placement="bottom" title="Le ha gustado a...<%for(Likes l : listaLikesPost){%>
+<%= l.getIdusuario().getIdpersona().getNombres() + " " + l.getIdusuario().getIdpersona().getApellidos()%><%}%>">
                                         <%
                                             } else {
                                         %>
-                                        <button class="btn btn-default stat-item" id="like<%=idPost%>" onclick="likes(this,<%=idPost%>,<%=likeId%>)">
+                                        <button class="btn btn-default stat-item" id="like<%=idPost%>" onclick="likes(this,<%=idPost%>,<%=likeId%>)" data-toggle="tooltip" data-placement="bottom" <%if(p.getLikesList().size()<1){%> title="Se el primero en decir me gusta" ><% } else {%>
+                                                title="Le ha gustado a...<%for(Likes l : listaLikesPost){%>
+<%= l.getIdusuario().getIdpersona().getNombres() + " " + l.getIdusuario().getIdpersona().getApellidos()%><%}%>"><%}%>
                                         <%
                                             }
                                         %>
@@ -259,7 +313,8 @@
                                </div>
                            </div>
                          </div>
-                         <%} %>
+                         <%}
+                            }%>
                           </div>
                           
                        </div>

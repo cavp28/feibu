@@ -66,8 +66,10 @@ public class AppInit implements ServletContextListener{
                 List<Usuarios> listaUsuarios =usuariosFacade.findAll();
         boolean existeAdmin=false;
         for (Usuarios usuario : listaUsuarios) {
+            System.out.println("Imprimiendo usuarios!!!"+usuario.getIdpersona().getNombres());
             if (usuario.getIdpersona().getIdrol().getIdrol()==1){
                 existeAdmin=true;
+                
             }
         }
         if (existeAdmin==false){
@@ -80,9 +82,12 @@ public class AppInit implements ServletContextListener{
             Sexo sexo=new Sexo();
             sexo.setIdsexo(1);
             sexo.setNombre("Femenino");
+           
             Ciudades ciudad = new Ciudades();
+            ciudad.setIdciudad(1);
             ciudad.setNombre("Santiago");
             Paises pais = new Paises();
+            pais.setIdpais(1);
             pais.setNombre("Republica Dominicana");
             List<Ciudades> listaCiudades = new ArrayList<>();
             listaCiudades.add(ciudad);

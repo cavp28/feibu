@@ -73,12 +73,18 @@
 	);
 
 	CREATE TABLE Amistades(
-	esAmigo int(12),
-	de int(12),
+	idAmistad int(13) PRIMARY KEY auto_increment,
+        soyAmigoDe int(12),
 	aceptado boolean,
-	FOREIGN KEY(esAmigo) REFERENCES Usuarios(idUsuario),
-	FOREIGN KEY(de) REFERENCES Usuarios(idUsuario)
+	FOREIGN KEY(soyAmigoDe) REFERENCES Usuarios(idUsuario)
 	);
+        
+        CREATE TABLE Usuarios_Amistade(
+        idUsuario int(12),
+        idAmistad int(13),
+        FOREIGN KEY(idUsuario) REFERENCES Usuarios(idUsuario),
+        FOREIGN KEY(idAmistad) REFERENCES Amistades(idAmistad)
+        );
 
 	CREATE Table Notificaciones(
 	idNotificaciones int(15) PRIMARY KEY auto_increment,

@@ -52,6 +52,11 @@ public class Usuarios implements Serializable {
     private Integer fotoperfil;
     @ManyToMany(mappedBy = "usuariosList")
     private List<Posts> postsList;
+    @JoinTable(name = "USUARIOS_AMISTADE", joinColumns = {
+        @JoinColumn(name = "IDUSUARIO", referencedColumnName = "IDUSUARIO")}, inverseJoinColumns = {
+        @JoinColumn(name = "IDAMISTAD", referencedColumnName = "IDAMISTAD")})
+    @ManyToMany
+    private List<Amistades> amistadesList;
     @JoinTable(name = "USUARIOS_NOTIFICACIONES", joinColumns = {
         @JoinColumn(name = "IDUSUARIO", referencedColumnName = "IDUSUARIO")}, inverseJoinColumns = {
         @JoinColumn(name = "IDNOTIFICACIONES", referencedColumnName = "IDNOTIFICACIONES")})
@@ -67,6 +72,8 @@ public class Usuarios implements Serializable {
     @JoinColumn(name = "IDPERSONA", referencedColumnName = "IDPERSONA")
     @ManyToOne(optional = false)
     private Personas idpersona;
+    @OneToMany(mappedBy = "soyamigode")
+    private List<Amistades> amistadesList1;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idusuario")
     private List<Likes> likesList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idusuario")
@@ -119,6 +126,15 @@ public class Usuarios implements Serializable {
     }
 
     @XmlTransient
+    public List<Amistades> getAmistadesList() {
+        return amistadesList;
+    }
+
+    public void setAmistadesList(List<Amistades> amistadesList) {
+        this.amistadesList = amistadesList;
+    }
+
+    @XmlTransient
     public List<Notificaciones> getNotificacionesList() {
         return notificacionesList;
     }
@@ -151,6 +167,15 @@ public class Usuarios implements Serializable {
 
     public void setIdpersona(Personas idpersona) {
         this.idpersona = idpersona;
+    }
+
+    @XmlTransient
+    public List<Amistades> getAmistadesList1() {
+        return amistadesList1;
+    }
+
+    public void setAmistadesList1(List<Amistades> amistadesList1) {
+        this.amistadesList1 = amistadesList1;
     }
 
     @XmlTransient

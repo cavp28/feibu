@@ -40,7 +40,7 @@ public class TablasCruzadasService {
     public Connection getConexion(){
         Connection con = null;
         try {
-            con = DriverManager.getConnection("jdbc:h2:tcp://localhost/~/feibu1", "sa", "1");
+            con = DriverManager.getConnection("jdbc:h2:tcp://localhost/~/feibu", "sa", "");
         } catch (SQLException ex) {
             Logger.getLogger(TablasCruzadasService.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -110,6 +110,28 @@ public class TablasCruzadasService {
         }
         
         return correcto;
+    }
+    
+    public boolean insertarAmistad(Usuarios usuario, Amistades amistad){
+         
+        boolean correcto = false;
+        
+        try(Connection con = getConexion()){
+            
+            PreparedStatement preparedStatement = con.prepareStatement("INSERT INTO USUARIOS_AMISTADE(idUsuario,idAmistad) VALUES(?,?)");
+            preparedStatement.setInt(1, usuario.getIdusuario());
+            preparedStatement.setInt(2, amistad.getIdamistad());
+            
+            int cantidadInsertada = preparedStatement.executeUpdate();
+            if(cantidadInsertada > 0){
+                correcto = true;
+            }
+                
+        } catch(SQLException ex){
+            Logger.getLogger(TablasCruzadasService.class.getName()).log(Level.SEVERE,null,ex);
+        }
+        
+        return correcto;    
     }
     
 }

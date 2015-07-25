@@ -4,6 +4,8 @@
     Author     : david
 --%>
 
+<%@page import="edu.pucmm.pw.entidades.Likes"%>
+<%@page import="edu.pucmm.pw.entidades.Amistades"%>
 <%@page import="edu.pucmm.pw.entidades.Comentarios"%>
 <%@page import="edu.pucmm.pw.servicios.LikesFacade"%>
 <%@page import="edu.pucmm.pw.servicios.PaisesFacade"%>
@@ -36,6 +38,8 @@
     <link href="GSDK_production_1.3/css/demo.css" rel="stylesheet" />  
     <link href="assets/css/animate.min.css" rel="stylesheet" /> 
     <link href="assets/css/timeline.css" rel="stylesheet" /> 
+    <script src="js/jquery.js"></script>
+    <script src="js/perfil/perfil.js"></script>
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
@@ -140,10 +144,10 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12 profile-opts">
-                  <button type="button" class="btn btn-info btn-fill pull-right">
+<!--                  <button type="button" class="btn btn-info btn-fill pull-right">
                     <i class="fa fa-user-plus"></i>
                     <span class="hidden-xs">Agregar a amigos</span>
-                  </button>     
+                  </button>     -->
                 </div>
             </div>
         </div>
@@ -164,7 +168,8 @@
                         <%=usuarioActual.getIdpersona().getLugarnacimiento().getIdpais().getNombre()%></a></li>
                         <% SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy"); %>
                         <li><i class="fa fa-calendar"></i>Nació el <%=formateador.format(usuarioActual.getIdpersona().getFechanacimiento())%></li>
-                        <li><i class="fa fa-rss"></i>Amigos <a href="#">51 People</a></li>
+                        <li><i class="fa fa-rss"></i>Amigos de <a href="#"><%=usuarioActual.getAmistadesList().size()%> personas</a></li>
+
                       </ul>
                     </div>
                     <div class="panel-footer text-center">
@@ -398,12 +403,45 @@
       <div class="section-gray">
         <div class="container">
             <div class="row">
+               <%
+                boolean sonAmigos = false;
+                boolean aceptado = false;
+                List<Amistades> listaAmigos = usuarioActual.getAmistadesList();
+                for(Amistades a : listaAmigos){
+                    if(a.getSoyamigode().getIdusuario()==usuarioPerfil.getIdusuario()){
+                        sonAmigos = true;
+                        if(a.getAceptado()){
+                            aceptado = true;
+                        } 
+                    }
+                }
+                
+                if(sonAmigos && aceptado){%>
+                   <div class="col-md-12 profile-opts">
+                  <button id="botonAgregar" type="button" class="btn btn-success btn-fill pull-right">
+                    <i class="fa fa-user"></i>
+                    <span class="hidden-xs">Amigos</span>
+                  </button>     
+                </div>     
+                 
+               <%     
+                } else if(sonAmigos && !aceptado) {
+               %>
                 <div class="col-md-12 profile-opts">
-                  <button type="button" class="btn btn-info btn-fill pull-right">
-                    <i class="fa fa-user-plus"></i>
-                    <span class="hidden-xs">Agregar a amigos</span>
+                  <button id="botonAgregar" type="button" class="btn btn-warning btn-fill pull-right" >
+                    <i class="fa fa-clock-o"></i>
+                    <span class="hidden-xs">Solicitud Enviada</span>
                   </button>     
                 </div>
+              <%} else {
+               %>
+                <div class="col-md-12 profile-opts">
+                  <button id="botonAgregar" type="button" class="btn btn-info btn-fill pull-right"  onclick="agregarAmigo(<%=usuarioPerfil.getIdusuario()%>)">
+                    <i id="iconoEstatusAmistad" class="fa fa-user-plus"></i>
+                    <span class="hidden-xs" id="estatusAmistad">Agregar a amigos</span>
+                  </button>     
+                </div>
+                    <%}%>
             </div>
         </div>
       </div><!-- end gray section -->
@@ -424,7 +462,7 @@
                                 <%=usuarioPerfil.getIdpersona().getLugarnacimiento().getIdpais().getNombre()%></a></li>
                         <% SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy"); %>
                         <li><i class="fa fa-calendar"></i>Nació el <%=formateador.format(usuarioPerfil.getIdpersona().getFechanacimiento())%></li>
-                        <li><i class="fa fa-rss"></i>Amigos <a href="#">51 People</a></li>
+                        <li><i class="fa fa-rss"></i>Amigos de <a href="#"><%=usuarioPerfil.getAmistadesList().size()%> personas</a></li>
                       </ul>
                     </div>
                     <div class="panel-footer text-center">
@@ -481,7 +519,9 @@
               </div>
 
             </div><!-- end left content-->
-
+            <%
+            if(sonAmigos&&aceptado){
+            %>
             <!--============= right content (posts) ===========================-->
             <div class="col-md-6 col-sm-7 col-xs-12 col-right">
               <div class="row">
@@ -493,7 +533,7 @@
                             <li><a href='#'><i class="fa fa-camera"></i><span class="hidden-xs">Imagen</span></a></li>
                             <li><a href='#'><i class="fa fa-photo"></i><span class="hidden-xs">Crear albúm de imágenes</span></a></li>
                         </ul>
-                        <textarea id="postPerfil" name="postPerfil"class="form-control" placeholder="¿En qué estás pensando?" required="required"></textarea>
+                        <textarea id="postPerfil" name="postPerfil"class="form-control" placeholder="Dile algo a <%=usuarioPerfil.getIdpersona().getNombres()%>" required="required"></textarea>
                         <ul class='list-inline post-actions'>
                             <li><a href="#"><span class="glyphicon glyphicon-camera"></span></a></li>
                             <li><a href="#" class='glyphicon glyphicon-user'></a></li>
@@ -546,48 +586,77 @@
                         <div class="post-description">
                             <p><em><%=p.getDescripcion()%></em></p>
                             <div class="stats" id="botonLike<%=idPost%>div">
-                                <button class="btn btn-primary stat-item" id="botonLike<%=idPost%>" onclick="like('botonLike<%=idPost%>')">
-                                    <i class="fa fa-thumbs-up icon"></i>
-                                    <%=p.getLikesList().size()%>
-                                </button>
-                                <button class="btn btn-primary stat-item" id="botonLike<%=idPost%>" onclick="like('botonLike<%=idPost%>')">
-                                    <i class="fa fa-share icon"></i>
-                                    <%=p.getComentariosList().size()%>
-                                </button>
-                            </div>
-                        </div>
-                               <div class="post-footer">
-                                   <div class="input-group"> 
-                                       <input class="form-control" placeholder="Agrega un comentario" type="text">
-                                       <span class="input-group-addon">
-                                           <a href="#"><i class="fa fa-edit"></i></a>  
-                                       </span>
+                                       <%
+                                            boolean usuarioLikesPost = false;
+                                            int likeId = -1;
+                                            List<Likes> listaLikesPost = p.getLikesList();
+                                            
+                                            for(Likes l : listaLikesPost){
+                                                if(l.getIdusuario().getIdusuario() == usuarioActual.getIdusuario()){
+                                                    usuarioLikesPost = true;
+                                                    likeId = l.getIdlike();
+                                                }
+                                            }
+                                            if(usuarioLikesPost){
+                                       %>
+                                       <button class="btn btn-primary stat-item" id="like<%=idPost%>" onclick="likes(this,<%=idPost%>,<%=likeId%>)" data-toggle="tooltip" data-placement="bottom" title="Le ha gustado a...<%for(Likes l : listaLikesPost){%>
+<%= l.getIdusuario().getIdpersona().getNombres() + " " + l.getIdusuario().getIdpersona().getApellidos()%><%}%>">
+                                        <%
+                                            } else {
+                                        %>
+                                        <button class="btn btn-default stat-item" id="like<%=idPost%>" onclick="likes(this,<%=idPost%>,<%=likeId%>)" data-toggle="tooltip" data-placement="bottom" <%if(p.getLikesList().size()<1){%> title="Se el primero en decir me gusta" ><% } else {%>
+                                                title="Le ha gustado a...<%for(Likes l : listaLikesPost){%>
+<%= l.getIdusuario().getIdpersona().getNombres() + " " + l.getIdusuario().getIdpersona().getApellidos()%><%}%>"><%}%>
+                                        <%
+                                            }
+                                        %>
+                                           <i class="fa fa-thumbs-up icon"></i>
+                                           <span id = "cantidadLikesPost<%=idPost%>"> <%=p.getLikesList().size()%> </span>
+                                       </button>
+                                       <div class="btn btn-info stat-item">
+                                           <i class="fa fa-comments icon"></i>
+                                           <span id = "cantidadCommentPost<%=idPost%>"> <%=p.getComentariosList().size()%> </span>
+                                       </div>
+                                       
                                    </div>
-                                   <ul class="comments-list">
-                                    <%
+                            </div>
+                               <div class="post-footer">
+                                   
+                                   <ul class="comments-list" id="<%=p.getIdpost()%>">
+                                       <%
                                             List<Comentarios> listaComentarios = p.getComentariosList();
                                             for(Comentarios c : listaComentarios){
-                                    %>
-                                    <li class="comment">
-                                    <a class="pull-left" href="#">
-                                        <!--<img class="avatar" src="img/Friends/guy-3.jpg" alt="avatar">-->
-                                    </a>
-                                    <div class="comment-body">
-                                        <div class="comment-heading">
-                                            <h4 class="comment-user-name"><a href="#"><%= c.getIdusuario().getIdpersona().getNombres() + " " + c.getIdusuario().getIdpersona().getApellidos() %></a></h4>
-                                            <h5 class="time"> <%=c.getFecha()%> </h5>
-                                        </div>
-                                        <p><%=c.getComentario()%></p>
-                                    </div>
-                                </li>
-                                <%
-                                    }
-                                %>                                                     
-                           </ul>
+                                       %>
+                                            <li class="comment">
+                                                <a class="pull-left" href="#">
+                                                    <!--<img class="avatar" src="img/Friends/guy-3.jpg" alt="avatar">-->
+                                                </a>
+                                                <div class="comment-body">
+                                                    <div class="comment-heading">
+                                                        <h4 class="comment-user-name"><a href="#"><%= c.getIdusuario().getIdpersona().getNombres() + " " + c.getIdusuario().getIdpersona().getApellidos() %></a></h4>
+                                                        <h5 class="time"> <%=c.getFecha()%> </h5>
+                                                    </div>
+                                                    <p style="word-break: break-all"><%=c.getComentario()%></p>
+                                                </div>
+                                            </li>
+                                       <%
+                                            }
+                                       %>
+                                                                             
+                                   </ul>
+                                       <div class="input-group"> 
+                                       <input class="form-control" id="agregarComentario<%=p.getIdpost()%>" placeholder="Agrega un comentario" type="text">
+                                       <span class="input-group-addon">
+                                           <a class="postComentario" id="<%=p.getIdpost()%>" href="javascript:void(0)"><i class="fa fa-edit"></i></a>  
+                                       </span>
+                                   </div>
                         </div>
                     </div>
                 </div>
-                <%} %><!-- end first post -->
+                <%} 
+            } else {%><!-- Fin de los post -->
+            <h3>Privado</h3>
+            <%}%>
             </div><!-- end right content-->
           </div>
           <div class="col-md-12 col-sm-12">
