@@ -4,6 +4,7 @@
     Author     : David Sanchez
 --%>
 
+<%@page import="edu.pucmm.pw.entidades.Likes"%>
 <%@page import="edu.pucmm.pw.servicios.LikesFacade"%>
 <%@page import="edu.pucmm.pw.servicios.PaisesFacade"%>
 <%@page import="edu.pucmm.pw.entidades.Paises"%>
@@ -191,12 +192,32 @@
                                 </div>
                             </div>
                             <br>
+                            
                             <div class="post-description">
                                 <p><em><%=p.getDescripcion()%></em></p>
                                    <div class="stats" id="botonLike<%=idPost%>div">
-                                       <button class="btn btn-primary stat-item" id="botonLike<%=idPost%>" onclick="like('botonLike<%=idPost%>')">
+                                       <%
+                                            boolean usuarioLikesPost = false;
+                                            int likeId = -1;
+                                            List<Likes> listaLikesPost = p.getLikesList();
+                                            for(Likes l : listaLikesPost){
+                                                if(l.getIdusuario().getIdusuario() == usuarioActual.getIdusuario()){
+                                                    usuarioLikesPost = true;
+                                                    likeId = l.getIdlike();
+                                                }
+                                            }
+                                            if(usuarioLikesPost){
+                                       %>
+                                       <button class="btn btn-primary stat-item" id="like<%=idPost%>" onclick="likes(this,<%=idPost%>,<%=likeId%>)">
+                                        <%
+                                            } else {
+                                        %>
+                                        <button class="btn btn-default stat-item" id="like<%=idPost%>" onclick="likes(this,<%=idPost%>,<%=likeId%>)">
+                                        <%
+                                            }
+                                        %>
                                            <i class="fa fa-thumbs-up icon"></i>
-                                           <%=p.getLikesList().size()%>
+                                           <span id = "cantidadLikesPost<%=idPost%>"> <%=p.getLikesList().size()%> </span>
                                        </button>
                                        <div class="btn btn-info stat-item">
                                            <i class="fa fa-comments icon"></i>
