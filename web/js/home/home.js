@@ -1,13 +1,38 @@
 var activeSubirFoto = false;
+var subirFotoDropzone;
 
-function like(botonPost) {
-    var boton = $('#' + botonPost);
-    var divs = $('#' + botonPost + 'div');
-    divs.addClass("stats");
-    boton.toggleClass("btn btn-default stat-item");
-    console.log("entro");
+function likes(el,idPost,idLike){
+    //console.log(idPost);
+    //console.log(el.className);
+    //console.log(likeId);
+    var estadoLike;
+    if(el.className === "btn btn-default stat-item"){
+        document.getElementById("like"+idPost).className = "btn btn-primary stat-item";
+        estadoLike = "AGREGAR";
+    } else {
+        document.getElementById("like"+idPost).className = "btn btn-default stat-item";
+        estadoLike = "ELIMINAR";
+    }
+    $.ajax({
+            url: "agregarLikeServlet",
+            method: "POST",
+            data: {idPost: idPost,
+                   estadoLike: estadoLike,
+                   idLike: idLike},
+            dataType: "json",
+            success: function(a,b,c){
+                if(a.Status==="EXITO"){                   
+                         
+                    $('#cantidadLikesPost'+ idPost).html(a.cantidadLikes);
+                    
+                  
+               } else if(a.Status==="FALLO"){
+                   console.log("Fallo");
+               }
+            }
+        });
+    
 }
-
 function agregarDropzone(){
    if(activeSubirFoto){
        $('#dropzoneSubirFoto').remove();
@@ -17,20 +42,38 @@ function agregarDropzone(){
                               '<div class="dz-message">'+
                                'Arroja o haz click para subir una foto.<br />'+
                                '<span class="note">(Ojala que sea una buena foto. Si la foto <strong>no</strong> te gusta, solamente dale a remove.)</span>'+
-                               '</div>'+  
+                               '</div>'+
+                               '<br/><button align="center" id ="subirFotoReady" class="btn btn-success" onclick="subirImagen()"><i class="fa fa-upload"></i></button> '+
                 '</form>');
        activeSubirFoto = true;
-        subirFotoDropzone = new Dropzone("#dropzoneSubirFoto", {
-		paramName : "archivo",
+       subirFotoDropzone = new Dropzone("#dropzoneSubirFoto", {
+            url : "/parcial2_grupo6/agregarFotoServlet",
+            autoProcessQueue : true,
+            paramName : "archivo",
+            acceptedFiles : "image/*",
+            maxFiles : 1,
+            parallelUploads : 1,
+            dictRemoveFile : "Eliminar foto",
+            addRemoveLinks : true,
+	    uploadMultiple : false,
+            clickable : true,
+            
+            
+            
+            
+            /*paramName : "archivo",
 		maxFilesize : 10, // MB
 		acceptedFiles : "image/*",
+                url : "/parcial2_grupo6/agregarFotoServlet",
 		addRemoveLinks : true,
 		clickable : true,
-		autoProcessQueue : true,
+		autoProcessQueue : false,
 		maxFiles : 1,
 		parallelUploads : 1,
 		dictRemoveFile : "Remove file",
-		uploadMultiple : false,
+		uploadMultiple : false,*/
+            
+                
 //		addedfile: function(a) {
 //            var c = this;
 //            return a.previewElement = Dropzone.createElement(this.options.previewTemplate), 
@@ -55,11 +98,13 @@ function agregarDropzone(){
 //            }
 
 	});
-   }
-    
+        
+   }    
   
 }
+
 $(document).ready(function () {
+    
     $('.postComentario').on('click', function () {        
         var idPost = $(this).attr('id');
         var comentario = $('#agregarComentario' + idPost).val();
@@ -100,8 +145,8 @@ $(document).ready(function () {
         });
     });
     
+    
     Dropzone.autoDiscover = false;
     
-   
-    
+     subirFotoDropzone;
 });

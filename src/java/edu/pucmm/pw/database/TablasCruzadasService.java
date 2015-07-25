@@ -40,7 +40,7 @@ public class TablasCruzadasService {
     public Connection getConexion(){
         Connection con = null;
         try {
-            con = DriverManager.getConnection("jdbc:h2:tcp://localhost/~/feibu", "sa", "");
+            con = DriverManager.getConnection("jdbc:h2:tcp://localhost/~/feibu1", "sa", "1");
         } catch (SQLException ex) {
             Logger.getLogger(TablasCruzadasService.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -50,16 +50,61 @@ public class TablasCruzadasService {
     public boolean insertarComentarioPost(Posts post, Comentarios comentario){
         
         boolean correcto = false;
+        
         try(Connection con = getConexion()){
+        
             PreparedStatement preparedStatement = con.prepareStatement("INSERT INTO COMENTARIOS_POSTS(idComentario,idPost) VALUES(?,?)");
             preparedStatement.setInt(1, comentario.getIdcomentario());
             preparedStatement.setInt(2, post.getIdpost());
             
             int cantidadInsertada = preparedStatement.executeUpdate();
-            if(cantidadInsertada > 0)
-            {
+            if(cantidadInsertada > 0){
                 correcto = true;
             }
+        } catch(SQLException ex){
+            Logger.getLogger(TablasCruzadasService.class.getName()).log(Level.SEVERE,null,ex);
+        }
+        
+        return correcto;
+    }
+    
+    public boolean insertarLikePost(Posts post, Likes like){
+        
+        boolean correcto = false;
+        
+        try(Connection con = getConexion()){
+            
+            PreparedStatement preparedStatement = con.prepareStatement("INSERT INTO LIKES_POSTS(idLike,idPost) VALUES(?,?)");
+            preparedStatement.setInt(1, like.getIdlike());
+            preparedStatement.setInt(2, post.getIdpost());
+            
+            int cantidadInsertada = preparedStatement.executeUpdate();
+            if(cantidadInsertada > 0){
+                correcto = true;
+            }
+                
+        } catch(SQLException ex){
+            Logger.getLogger(TablasCruzadasService.class.getName()).log(Level.SEVERE,null,ex);
+        }
+        
+        return correcto;      
+    }
+    
+    public boolean eliminarLikePost(Posts post, Likes like){
+        
+        boolean correcto = false;
+        
+        try(Connection con = getConexion()){
+            
+            PreparedStatement preparedStatement = con.prepareStatement("DELETE FROM LIKES_POSTS WHERE idLike = ? AND idPost = ?");
+            preparedStatement.setInt(1, like.getIdlike());
+            preparedStatement.setInt(2, post.getIdpost());
+            
+            int cantidadEliminada = preparedStatement.executeUpdate();
+            if(cantidadEliminada > 0){
+                correcto = true;
+            }
+                
         } catch(SQLException ex){
             Logger.getLogger(TablasCruzadasService.class.getName()).log(Level.SEVERE,null,ex);
         }
