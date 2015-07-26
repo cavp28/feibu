@@ -209,14 +209,13 @@
                         <!-- Cargando Post -->
                         
                         <% 
-                            List<Posts> listaPost = new ArrayList<Posts>();
-                            
-                            listaPost =postsFacade.findAll(); //usuarioActual.getPostsList(); // 
+                            List<Posts> listaPost = listaPost =postsFacade.findAll(); //usuarioActual.getPostsList(); // 
                             
                             Collections.reverse(listaPost);                             
-                            for(Posts p : listaPost){  
+                            for(Posts p : listaPost){
+                                System.out.println(p.getDescripcion());
                                 String idPost = p.getIdpost().toString();
-                                if(p.getIdusuario()==usuarioActual||listaDeAmigos.contains(p.getIdusuario()))
+                                if(p.getIdusuario().equals(usuarioActual)||listaDeAmigos.contains(p.getIdusuario()))
                                 {
                         %>
                          <div class="col-md-12">
