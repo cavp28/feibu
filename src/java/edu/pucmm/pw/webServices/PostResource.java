@@ -74,8 +74,8 @@ public class PostResource {
     }
     
     @POST
-  
-    public Boolean registroPosteo(@FormParam("emailUsuario") String emailUsuario, 
+    @Produces("text/html")
+    public String registroPosteo(@FormParam("emailUsuario") String emailUsuario, 
                                     @FormParam("emailUsuarioPerfil") String emailUsuarioPerfil, 
                                     @FormParam("contrasena")String contrasena,
                                     @FormParam("post")String post,
@@ -130,6 +130,11 @@ public class PostResource {
             postsFacade.create(nuevoPost);
             creado=true;
         }
-        return creado;
+        if (creado){
+            return "<html><body>Insertado correctamente<br>Desea volver a insertar?<a href=\"http://localhost:8080/RestfulWebClient/index.html\">Inicio</a></body></html>";
+        }
+        else{
+            return "<html><body>No pudo ser insertado correctamente<br>Desea volver a insertar?<a href=\"http://localhost:8080/RestfulWebClient/index.html\">Inicio</a></body></html>";
+        }
      }
 }

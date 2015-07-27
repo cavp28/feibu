@@ -169,7 +169,8 @@
                         <% SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy"); %>
                         <li><i class="fa fa-calendar"></i>Nació el <%=formateador.format(usuarioActual.getIdpersona().getFechanacimiento())%></li>
                         <li><i class="fa fa-rss"></i>Amigos de <a href="#"><%=usuarioActual.getAmistadesList().size()%> personas</a></li>
-
+                        <li><i class="fa fa-user"></i>Email: <%=usuarioActual.getIdpersona().getEmail()%></li>
+                        
                       </ul>
                     </div>
                     <div class="panel-footer text-center">
@@ -463,6 +464,8 @@
                         <% SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy"); %>
                         <li><i class="fa fa-calendar"></i>Nació el <%=formateador.format(usuarioPerfil.getIdpersona().getFechanacimiento())%></li>
                         <li><i class="fa fa-rss"></i>Amigos de <a href="#"><%=usuarioPerfil.getAmistadesList().size()%> personas</a></li>
+                        <li><i class="fa fa-user"></i>Email: <%=usuarioPerfil.getIdpersona().getEmail()%></li>
+                        
                       </ul>
                     </div>
                     <div class="panel-footer text-center">
