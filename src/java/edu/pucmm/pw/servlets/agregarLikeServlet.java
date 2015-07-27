@@ -67,13 +67,13 @@ public class agregarLikeServlet extends HttpServlet {
                     if(TablasCruzadasService.getInstancia().insertarLikePost(postActual, nuevoLike)){
                         jsonMap.put("Status", "EXITO");
                         jsonMap.put("cantidadLikes", String.valueOf(postActual.getLikesList().size()));
+                        jsonMap.put("idLike", String.valueOf(nuevoLike.getIdlike()));
                     } else {
                         jsonMap.put("Status", "FALLO");
                     }
                     break;
                 case "ELIMINAR":
                     nuevoLike = likesFacade.find(Integer.parseInt(request.getParameter("idLike")));
-                    System.out.println(nuevoLike);
                     if(TablasCruzadasService.getInstancia().eliminarLikePost(postActual, nuevoLike)){
                         jsonMap.put("Status", "EXITO");
                         jsonMap.put("cantidadLikes", String.valueOf(postActual.getLikesList().size()));

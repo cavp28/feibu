@@ -1,7 +1,7 @@
 var activeSubirFoto = false;
 var subirFotoDropzone;
 
-function likes(el,idPost,idLike){
+function likes(el,idPost){
     //console.log(idPost);
     //console.log(el.className);
     //console.log(likeId);
@@ -13,20 +13,30 @@ function likes(el,idPost,idLike){
         document.getElementById("like"+idPost).className = "btn btn-default stat-item";
         estadoLike = "ELIMINAR";
     }
+     var idLike = document.getElementById("idLikedPost"+idPost);
     $.ajax({
             url: "agregarLikeServlet",
             method: "POST",
             data: {idPost: idPost,
                    estadoLike: estadoLike,
-                   idLike: idLike},
+                   idLike: idLike.value},
             dataType: "json",
             success: function(a,b,c){
                 if(a.Status==="EXITO"){                   
                          
                     $('#cantidadLikesPost'+ idPost).html(a.cantidadLikes);
-                    
-                  
+                   
+                    if(estadoLike ==="AGREGAR"){
+                        idLike.value = a.idLike;
+                        console.log(idLike.value);
+                    }
                } else if(a.Status==="FALLO"){
+//                   console.log(estadoLike)
+//                   if(estadoLike==="AGREGAR"){
+//                       document.getElementById("like"+idPost).className = "btn btn-default stat-item";
+//                   } else if(estadoLike==="ELIMINAR") {
+//                       document.getElementById("like"+idPost).className = "btn btn-primary stat-item";
+//                   }
                    console.log("Fallo");
                }
             }
