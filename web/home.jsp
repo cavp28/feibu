@@ -330,8 +330,16 @@
                            <div class="panel panel-white post panel-shadow">
                                <div class="post-heading">
                                    <div class="pull-left image">
-                                    <!--  <img src="fotos/tech-dhl-delivery-drones.jpg" class="img-rounded avatar" alt="user profile image">
-                               --></div>
+                                     <%
+                                    if(usuarioActual.getFotoperfil()!=null){
+                                        
+                                    }else{
+                                %>
+                                    <img src="fotos/unknown-person.gif" class="img-rounded avatar" alt="user profile image">
+                        
+                                    <%}%>
+                                    
+                               </div>
                                    <div class="pull-left meta">
                                        <div class="title h5">
                                            <%if(p.getEmisorusuario()==null){%>
