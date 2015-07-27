@@ -4,6 +4,8 @@
     Author     : David Sanchez
 --%>
 
+<%@page import="edu.pucmm.pw.servicios.AlbumesFacade"%>
+<%@page import="edu.pucmm.pw.entidades.Albumes"%>
 <%@page import="edu.pucmm.pw.entidades.Tipopost"%>
 <%@page import="edu.pucmm.pw.entidades.Imagenes"%>
 <%@page import="edu.pucmm.pw.servicios.ImagenesFacade"%>
@@ -56,6 +58,9 @@
         
         String jndiUrl8 = "java:comp/env/ImagenesFacade";
         ImagenesFacade imagenesFacade = (ImagenesFacade) context.lookup(jndiUrl8);
+        
+        String jndiUrl9 = "java:comp/env/AlbumesFacade";
+        AlbumesFacade albumesFacade = (AlbumesFacade) context.lookup(jndiUrl9);
         %>
     <head>
 	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
@@ -71,6 +76,16 @@
         <script src="js/home/home.js"></script>
         <script src="js/dropzone/dropzone.js"></script>
         <link rel="stylesheet" href="https://rawgit.com/enyo/dropzone/master/dist/dropzone.css">
+       <link rel="stylesheet" href="css/sss.css" type="text/css" media="all">
+
+        <script src="js/sss.min.js"></script>
+        <script>
+            jQuery(function($) {
+            $('.slider').sss();
+            });
+        </script>
+       
+
 	<!--[if lt IE 9]>
         <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
 	<![endif]-->
@@ -122,8 +137,14 @@
                            </li>
                            <li>
                                 <a href="Perfil.jsp" title="Perfil">
-                                <img src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xap1/v/t1.0-1/c0.0.50.50/p50x50/1384338_10152731259415973_1038309681161336048_n.jpg?oh=30c601486023e844b1bf279bdea2ff58&oe=5614B6EC&__gda__=1448157405_699c164efb217456d05f7b3834006aab"
+                                <%
+                                    if(usuarioActual.getFotoperfil()!=null){
+                                        
+                                    }else{
+                                %>
+                                    <img src="fotos/unknown-person.gif" class="img-rounded avatar" style="width:15%;height:15%;"
                                      alt id="profile_pic_header_736435972">
+                                    <%}%>
                                 <span class="_2dpb">
                                     <%=usuarioActual.getIdpersona().getNombres()%>
                                 </span>
@@ -273,11 +294,11 @@
                                                     <input name ="nombreAlbum" id="nombreAlbum" class="form-control" placeholder="Nombre del Album" required="required"></input><br/>
                                                     Selecciona las fotos:<input name="archivo" id="fotoASubir" type="file" required="required"  accept="image/*" multiple></input><br/>
                                                   <!--<div class="form-group" style="padding:14px; border:solid 1px blue;">-->
-                                                      <textarea name ="fotoDescripcion" id="fotoDescripcion" class="form-control" placeholder="Descripción"></textarea>
+                                                      <textarea name ="albumDescripcion" id="fotoDescripcion" class="form-control" placeholder="Descripción"></textarea>
                                               </div>
                                                       
                                                  <!--</div>-->
-                                                 <label name="tipoPost" value="2" hidden></label><br/>
+                                                 <label name="tipoPost" value="3" hidden></label><br/>
                                                  <button class="btn btn-primary center-block" type="submit">Publicar</button>
                                                 </form>
                                             
@@ -295,6 +316,9 @@
                         <% 
                             List<Posts> listaPost = listaPost =postsFacade.findAll(); //usuarioActual.getPostsList(); // 
                             
+                            List<Imagenes> listaImagenes = imagenesFacade.findAll();
+                            List<Albumes> listaAlbumes = albumesFacade.findAll();
+                            
                             Collections.reverse(listaPost);                             
                             for(Posts p : listaPost){
                                 System.out.println(p.getDescripcion());
@@ -302,7 +326,7 @@
                                 if(p.getIdusuario().equals(usuarioActual)||listaDeAmigos.contains(p.getIdusuario()))
                                 {
                         %>
-                         <div class="col-md-12">
+                         
                            <div class="panel panel-white post panel-shadow">
                                <div class="post-heading">
                                    <div class="pull-left image">
@@ -312,7 +336,13 @@
                                        <div class="title h5">
                                            <%if(p.getEmisorusuario()==null){%>
                                            <a href="Perfil.jsp?idUsuarioPerfil=<%=p.getIdusuario().getIdusuario()%>" class="text-primary"><%=p.getIdusuario().getIdpersona().getNombres()+" " +p.getIdusuario().getIdpersona().getApellidos() %></a>
-                                           ha publicado algo en su muro.
+                                           <%if(p.getTipopost().getTipopost()==tipoPostFacade.find(1).getTipopost()){%>
+                                           ha publicado un estado en su muro.
+                                           <%} else if(p.getTipopost().getTipopost()==tipoPostFacade.find(2).getTipopost()){%>
+                                           ha subido una nueva foto a su muro.
+                                           <%} else if(p.getTipopost().getTipopost()==tipoPostFacade.find(3).getTipopost()){%>
+                                           ha subido un nuevo album de imagenes.
+                                           <%}%>
                                        </div>
                                            <h6 class="text-muted time"><%=p.getFechapost()%></h6>
                                            <%}%>
@@ -326,16 +356,14 @@
                             </div>
                             <br>
                             
-                            <%
-                            List<Imagenes> listaImagenes = imagenesFacade.findAll();
-                            %>
+                            
                             
                             <%
                             
-                            Imagenes imagenPostActual = new Imagenes();
+                            
                             if(p.getTipopost().getTipopost()==tipoPostFacade.find(2).getTipopost()){
-                                %>
-                                <%
+                                Imagenes imagenPostActual = new Imagenes();
+                            
                                 for(Imagenes i : listaImagenes){
                                     if(i.getIdpost().getIdpost() == p.getIdpost()){
                                         imagenPostActual = imagenesFacade.find(i.getIdimagen());
@@ -347,8 +375,27 @@
                                 
                                  <img src="<%= imagenPostActual.getImagen() %>" class="img-responsive" alt="Foto :D">
                                 <%
-                            }
+                            } else if(p.getTipopost().getTipopost()==tipoPostFacade.find(3).getTipopost()){
+                                Albumes albumPostActual = new Albumes();
+                                
+                                for(Albumes a : listaAlbumes){
+                                    if(a.getIdpost().getIdpost() == p.getIdpost()){
+                                        albumPostActual = albumesFacade.find(a.getIdalbum());
+                                    }
+                                }
+                                %>
+                                <div class="slider">
+                                <%
+                                for(Imagenes imagenActualAlbum : albumPostActual.getImagenesList()){  
+                                                                                                 
                             %>
+                           
+                                <img src="<%= imagenActualAlbum.getImagen() %>"/>
+                            
+                            <%}
+                            %></div><%
+                                }%>
+                              <!-- </div>-->
                             <div class="post-description">
                                 <p><em><%=p.getDescripcion()%></em></p>
                                    <div class="stats" id="botonLike<%=idPost%>div">
@@ -421,7 +468,7 @@
                                        </span>
                                    </div>
                                </div>
-                           </div>
+                           
                          </div>
                          <%}
                             }%>
