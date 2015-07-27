@@ -1,8 +1,5 @@
-function likes(el,idPost,idLike){
-    //console.log(idPost);
-    //console.log(el.className);
-    //console.log(likeId);
-    var estadoLike;
+function likes(el,idPost){
+   var estadoLike;
     if(el.className === "btn btn-default stat-item"){
         document.getElementById("like"+idPost).className = "btn btn-primary stat-item";
         estadoLike = "AGREGAR";
@@ -10,17 +7,23 @@ function likes(el,idPost,idLike){
         document.getElementById("like"+idPost).className = "btn btn-default stat-item";
         estadoLike = "ELIMINAR";
     }
+     var idLike = document.getElementById("idLikedPost"+idPost);
     $.ajax({
             url: "agregarLikeServlet",
             method: "POST",
             data: {idPost: idPost,
                    estadoLike: estadoLike,
-                   idLike: idLike},
+                   idLike: idLike.value},
             dataType: "json",
             success: function(a,b,c){
                 if(a.Status==="EXITO"){                   
                          
                     $('#cantidadLikesPost'+ idPost).html(a.cantidadLikes);
+                   
+                    if(estadoLike ==="AGREGAR"){
+                        idLike.value = a.idLike;
+                        console.log(idLike.value);
+                    }
                     
                   
                } else if(a.Status==="FALLO"){

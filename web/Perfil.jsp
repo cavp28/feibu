@@ -597,14 +597,17 @@
                                                     likeId = l.getIdlike();
                                                 }
                                             }
+                                         %>
+                                         <input class="text" id="idLikedPost<%=idPost%>" value="<%=likeId%>" type="hidden"></input>
+                                         <%
                                             if(usuarioLikesPost){
                                        %>
-                                       <button class="btn btn-primary stat-item" id="like<%=idPost%>" onclick="likes(this,<%=idPost%>,<%=likeId%>)" data-toggle="tooltip" data-placement="bottom" title="Le ha gustado a...<%for(Likes l : listaLikesPost){%>
+                                       <button class="btn btn-primary stat-item" id="like<%=idPost%>" onclick="likes(this,<%=idPost%>)" data-toggle="tooltip" data-placement="bottom" title="Le ha gustado a...<%for(Likes l : listaLikesPost){%>
 <%= l.getIdusuario().getIdpersona().getNombres() + " " + l.getIdusuario().getIdpersona().getApellidos()%><%}%>">
                                         <%
                                             } else {
                                         %>
-                                        <button class="btn btn-default stat-item" id="like<%=idPost%>" onclick="likes(this,<%=idPost%>,<%=likeId%>)" data-toggle="tooltip" data-placement="bottom" <%if(p.getLikesList().size()<1){%> title="Se el primero en decir me gusta" ><% } else {%>
+                                        <button class="btn btn-default stat-item" id="like<%=idPost%>" onclick="likes(this,<%=idPost%>)" data-toggle="tooltip" data-placement="bottom" <%if(p.getLikesList().size()<1){%> title="Se el primero en decir me gusta" ><% } else {%>
                                                 title="Le ha gustado a...<%for(Likes l : listaLikesPost){%>
 <%= l.getIdusuario().getIdpersona().getNombres() + " " + l.getIdusuario().getIdpersona().getApellidos()%><%}%>"><%}%>
                                         <%
