@@ -5,8 +5,10 @@
  */
 package edu.pucmm.pw.webServices;
 
+import edu.pucmm.pw.entidades.Imagenes;
 import edu.pucmm.pw.entidades.Posts;
 import edu.pucmm.pw.entidades.Usuarios;
+import edu.pucmm.pw.servicios.ImagenesFacade;
 import edu.pucmm.pw.servicios.PersonasFacade;
 import edu.pucmm.pw.servicios.PostsFacade;
 import edu.pucmm.pw.servicios.TipopostFacade;
@@ -46,6 +48,9 @@ public class PostResource {
     
     @EJB
     PostsFacade postsFacade;
+    
+    @EJB
+    ImagenesFacade imagenesFacade;
     /**
      * Creates a new instance of PostResource
      */
@@ -79,10 +84,11 @@ public class PostResource {
                                     @FormParam("emailUsuarioPerfil") String emailUsuarioPerfil, 
                                     @FormParam("contrasena")String contrasena,
                                     @FormParam("post")String post,
-                                    @FormParam("tipoPost")int tipoPost){
-        //Creando Post
+                                    @FormParam("accion")int tipoPost,
+                                    @FormParam("imagenPost")String rutaImagen){
         Boolean creado=false;
         Usuarios usuarioPost = new Usuarios();
+        System.out.println("Esta es la imagen que me llega:"+rutaImagen);
         if(tipoPost==1){
             Posts nuevoPost = new Posts();
             List<Usuarios> listaUsuarios = usuariosFacade.findAll();
@@ -99,8 +105,18 @@ public class PostResource {
                 nuevoPost.setFechapost(new Date());
                 postsFacade.create(nuevoPost);
                 creado=true;
+                if(!rutaImagen.isEmpty()){
+                   Imagenes image = new Imagenes();
+                   image.setIdpost(nuevoPost);
+                   image.setImagen(rutaImagen);
+                   image.setFechasubida(new Date());
+                   image.setDescripcion(nuevoPost.getDescripcion());
+                   image.setIdusuario(usuarioPost);
+                   imagenesFacade.create(image);
+                }
             }
         }
+      //  if (tipoPost)==2{}
         if(tipoPost==3){
             Usuarios emisorPost = new Usuarios();
             Posts nuevoPost = new Posts();
@@ -122,13 +138,34 @@ public class PostResource {
                 nuevoPost.setTipopost(tipoPostFacade.find(3));
                 nuevoPost.setEmisorusuario(usuarioPost);
                 nuevoPost.setIdusuario(emisorPost);
+                if(!rutaImagen.isEmpty()){
+                   Imagenes image = new Imagenes();
+                   image.setIdpost(nuevoPost);
+                   image.setImagen(rutaImagen);
+                   image.setFechasubida(new Date());
+                   image.setDescripcion(nuevoPost.getDescripcion());
+                   image.setIdusuario(emisorPost);
+                   postsFacade.create(nuevoPost);
+                   imagenesFacade.create(image);
+                   creado=true;
+                }
             }
             else{
                 nuevoPost.setTipopost(tipoPostFacade.find(1));
                 nuevoPost.setIdusuario(emisorPost);
+                if(!rutaImagen.isEmpty()){
+                   Imagenes image = new Imagenes();
+                   image.setIdpost(nuevoPost);
+                   image.setImagen(rutaImagen);
+                   image.setFechasubida(new Date());
+                   image.setDescripcion(nuevoPost.getDescripcion());
+                   image.setIdusuario(emisorPost);
+                   postsFacade.create(nuevoPost);
+                   imagenesFacade.create(image);
+                   creado=true;
+                }
             }
-            postsFacade.create(nuevoPost);
-            creado=true;
+            
         }
         if (creado){
             return "<html><body>Insertado correctamente<br>Desea volver a insertar?<a href=\"http://localhost:8080/RestfulWebClient/index.html\">Inicio</a></body></html>";
