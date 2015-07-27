@@ -1,6 +1,14 @@
 var activeSubirFoto = false;
 var subirFotoDropzone;
 
+function subirFoto(){
+    $("#subirFotoModal").modal();
+}
+
+function subirAlbum(){
+    $("#subirAlbumModal").modal();
+}
+
 function likes(el,idPost){
     //console.log(idPost);
     //console.log(el.className);
@@ -44,6 +52,13 @@ function likes(el,idPost){
     
 }
 function agregarDropzone(){
+//    $("#subirFoto").click(function(){
+//        $("#subirFotoModal").modal();
+//    });
+//    
+//    $("#subirAlbum").click(function(){
+//        $("#subirAlbumModal").modal();
+//    });
    if(activeSubirFoto){
        $('#dropzoneSubirFoto').remove();
        activeSubirFoto = false;

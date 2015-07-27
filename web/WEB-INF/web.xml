@@ -65,4 +65,14 @@
         <ejb-ref-type>Session</ejb-ref-type>
         <local>edu.pucmm.pw.servicios.AmistadesFacade</local>
     </ejb-local-ref> 
+    <ejb-local-ref>
+        <ejb-ref-name>TipopostFacade</ejb-ref-name>
+        <ejb-ref-type>Session</ejb-ref-type>
+        <local>edu.pucmm.pw.servicios.TipopostFacade</local>
+    </ejb-local-ref> 
+    <ejb-local-ref>
+        <ejb-ref-name>ImagenesFacade</ejb-ref-name>
+        <ejb-ref-type>Session</ejb-ref-type>
+        <local>edu.pucmm.pw.servicios.ImagenesFacade</local>
+    </ejb-local-ref> 
 </web-app>

@@ -4,6 +4,10 @@
     Author     : David Sanchez
 --%>
 
+<%@page import="edu.pucmm.pw.entidades.Tipopost"%>
+<%@page import="edu.pucmm.pw.entidades.Imagenes"%>
+<%@page import="edu.pucmm.pw.servicios.ImagenesFacade"%>
+<%@page import="edu.pucmm.pw.servicios.TipopostFacade"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="edu.pucmm.pw.servicios.AmistadesFacade"%>
 <%@page import="edu.pucmm.pw.entidades.Amistades"%>
@@ -46,7 +50,12 @@
         
         String jndiUrl6 = "java:comp/env/AmistadesFacade";
         AmistadesFacade amistadesFacade = (AmistadesFacade) context.lookup(jndiUrl6);
-  
+        
+        String jndiUrl7 = "java:comp/env/TipopostFacade";
+        TipopostFacade tipoPostFacade = (TipopostFacade) context.lookup(jndiUrl7);
+        
+        String jndiUrl8 = "java:comp/env/ImagenesFacade";
+        ImagenesFacade imagenesFacade = (ImagenesFacade) context.lookup(jndiUrl8);
         %>
     <head>
 	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
@@ -140,7 +149,7 @@
                 </div>
                 <!-- /top nav -->
                 
-                <!-- Modal -->
+                <!-- Modal Recomendar Amigos-->
                 <div id="sugerirAmigosModal" class="modal fade" role="dialog">
                   <div class="modal-dialog">
 
@@ -195,16 +204,91 @@
                                    <form class="form-horizontal" role="form" action="/parcial2_grupo6/CRUDServlet" method="POST">
                                     <h4>¿Qué hay de nuevo?</h4>
                                      <div class="form-group" style="padding:14px;">
-                                         <textarea name ="post" id="post" class="form-control" placeholder="Actualiza tu estado" required="required"></textarea>
+                                         <textarea name ="post" id="post" class="form-control" placeholder="Actualiza tu estado" required="required" ></textarea>
                                     </div>
 <!--                                    <label name="tipoPost" value="1" hidden></label>-->
                                     <button class="btn btn-primary pull-right" type="submit">Publicar</button>
-                                    <ul class="list-inline" id="botonFoto">
-                                        <li><button id ="subirFoto" class="btn btn-default" onclick="agregarDropzone()"><i class="glyphicon glyphicon-camera"></i></button></li>                                      
-                                    </ul>
+                                    
                                     
                                   </form>
+                                 <ul class="list-inline" id="botonFoto">
+                                     <li><button id ="subirFoto" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="Subir nueva foto a tu muro" onclick="subirFoto()"><i class="glyphicon glyphicon-camera"></i></button></li>                                      
+                                     <li><button id ="subirAlbum" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="Crear un nuevo Album" onclick="subirAlbum()"><i class="fa fa-th"></i></button></li>
+                                 </ul>
                                  
+                              </div>
+                             
+                             <!-- Foto en el muro modal -->
+                             <div id="subirFotoModal" class="modal fade" role="dialog">
+                                <div class="modal-dialog">
+
+                                  <!-- Modal content-->
+                                  <div class="modal-content">
+                                    <div class="modal-header">
+                                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                      <h4 class="modal-title">Publicar una foto en tu muro</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="form-group" style="padding:14px;">
+                                           
+                                           
+                                            <div class="well">
+                                                <form class="form-horizontal" role="form" action="/parcial2_grupo6/agregarFotoServlet" method="POST" enctype="multipart/form-data">
+                                                  Selecciona la foto:<input name="archivo" id="fotoASubir" type="file" required="required"  accept="image/*"></input><br/>
+                                                  <!--<div class="form-group" style="padding:14px; border:solid 1px blue;">-->
+                                                      <textarea name ="fotoDescripcion" id="fotoDescripcion" class="form-control" placeholder="Descripción"></textarea>
+                                              </div>
+                                                      
+                                                 <!--</div>-->
+                                                 <label name="tipoPost" value="2" hidden></label><br/>
+                                                 <button class="btn btn-primary center-block" type="submit">Publicar</button>
+                                                </form>
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                      <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                                    </div>
+                                  </div>
+
+                                </div>
+                              </div>
+                             
+                             <!--Crear un album modal-->
+                             <div id="subirAlbumModal" class="modal fade" role="dialog">
+                                <div class="modal-dialog">
+
+                                  <!-- Modal content-->
+                                  <div class="modal-content">
+                                    <div class="modal-header">
+                                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                      <h4 class="modal-title">Crear un nuevo album de fotos</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="form-group" style="padding:14px;">
+                                           
+                                           
+                                            <div class="well">
+                                                <form class="form-horizontal" role="form" action="/parcial2_grupo6/agregarAlbumServlet" method="POST" enctype="multipart/form-data">
+                                                    <input name ="nombreAlbum" id="nombreAlbum" class="form-control" placeholder="Nombre del Album" required="required"></input><br/>
+                                                    Selecciona las fotos:<input name="archivo" id="fotoASubir" type="file" required="required"  accept="image/*" multiple></input><br/>
+                                                  <!--<div class="form-group" style="padding:14px; border:solid 1px blue;">-->
+                                                      <textarea name ="fotoDescripcion" id="fotoDescripcion" class="form-control" placeholder="Descripción"></textarea>
+                                              </div>
+                                                      
+                                                 <!--</div>-->
+                                                 <label name="tipoPost" value="2" hidden></label><br/>
+                                                 <button class="btn btn-primary center-block" type="submit">Publicar</button>
+                                                </form>
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                      <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                                    </div>
+                                  </div>
+
+                                </div>
                               </div>
                         <!-- Cargando Post -->
                         
@@ -222,8 +306,8 @@
                            <div class="panel panel-white post panel-shadow">
                                <div class="post-heading">
                                    <div class="pull-left image">
-                                      <!-- <img src="img/Profile/profile.jpg" class="img-rounded avatar" alt="user profile image">
-  -->                              </div>
+                                    <!--  <img src="fotos/tech-dhl-delivery-drones.jpg" class="img-rounded avatar" alt="user profile image">
+                               --></div>
                                    <div class="pull-left meta">
                                        <div class="title h5">
                                            <%if(p.getEmisorusuario()==null){%>
@@ -242,6 +326,29 @@
                             </div>
                             <br>
                             
+                            <%
+                            List<Imagenes> listaImagenes = imagenesFacade.findAll();
+                            %>
+                            
+                            <%
+                            
+                            Imagenes imagenPostActual = new Imagenes();
+                            if(p.getTipopost().getTipopost()==tipoPostFacade.find(2).getTipopost()){
+                                %>
+                                <%
+                                for(Imagenes i : listaImagenes){
+                                    if(i.getIdpost().getIdpost() == p.getIdpost()){
+                                        imagenPostActual = imagenesFacade.find(i.getIdimagen());
+                                    }
+                                }
+                                
+                                
+                            %>
+                                
+                                 <img src="<%= imagenPostActual.getImagen() %>" class="img-responsive" alt="Foto :D">
+                                <%
+                            }
+                            %>
                             <div class="post-description">
                                 <p><em><%=p.getDescripcion()%></em></p>
                                    <div class="stats" id="botonLike<%=idPost%>div">

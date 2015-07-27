@@ -5,6 +5,13 @@
  */
 package edu.pucmm.pw.servlets;
 
+import edu.pucmm.pw.entidades.Imagenes;
+import edu.pucmm.pw.entidades.Posts;
+import edu.pucmm.pw.entidades.Usuarios;
+import edu.pucmm.pw.servicios.ImagenesFacade;
+import edu.pucmm.pw.servicios.PostsFacade;
+import edu.pucmm.pw.servicios.TipopostFacade;
+import edu.pucmm.pw.servicios.UsuariosFacade;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -16,12 +23,15 @@ import static java.lang.System.out;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Date;
+import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 import org.apache.commons.io.IOUtils;
 
@@ -33,6 +43,14 @@ import org.apache.commons.io.IOUtils;
 @MultipartConfig
 public class agregarFotoServlet extends HttpServlet {
 
+    @EJB
+    UsuariosFacade usuariosFacade;
+    @EJB
+    PostsFacade postFacade;
+    @EJB
+    ImagenesFacade imagenesFacade;
+    @EJB
+    TipopostFacade tipoPostFacade;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -50,7 +68,10 @@ public class agregarFotoServlet extends HttpServlet {
         Part p1 =request.getPart("archivo");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            String ruta = "/home/david/Desktop";
+            String ruta = "C:\\Users\\darks_000\\Documents\\Universidad\\Programación Web\\Proyecto Final\\V2 - Chance\\parcial2_grupo6\\web\\fotos";
+            
+            
+            System.out.println(ruta);
             is =p1.getInputStream();
             
             String nombreArchivo = getMD5FromBytes(IOUtils.toByteArray(is));
@@ -63,6 +84,29 @@ public class agregarFotoServlet extends HttpServlet {
             while((leido=is.read(bytes))!=-1){
                 fous.write(bytes,0,leido);
             }
+            HttpSession sesion = request.getSession();
+            
+            Usuarios usuarioPost = usuariosFacade.find(sesion.getAttribute("idUsuario"));
+            
+            Posts nuevoPost = new Posts();
+            nuevoPost.setIdusuario(usuarioPost);
+            nuevoPost.setTipopost(tipoPostFacade.find(2));
+            nuevoPost.setFechapost(new Date());
+            nuevoPost.setDescripcion(request.getParameter("fotoDescripcion"));
+            postFacade.create(nuevoPost);
+            
+            Imagenes nuevaImagen = new Imagenes();
+            nuevaImagen.setImagen("fotos" + File.separator+ nombreArchivo + "." +extension);
+            nuevaImagen.setIdpost(nuevoPost);
+            nuevaImagen.setFechasubida(new Date());
+            nuevaImagen.setDescripcion(request.getParameter("fotoDescripcion"));
+            nuevaImagen.setIdusuario(usuarioPost);
+            imagenesFacade.create(nuevaImagen);
+            
+            //nuevaImagen.se
+            
+            
+            response.sendRedirect("home.jsp");
         } catch (FileNotFoundException ex) {
             System.out.println("El error es: " + ex.getMessage());
         } 
